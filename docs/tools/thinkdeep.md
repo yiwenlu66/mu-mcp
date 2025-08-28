@@ -1,12 +1,10 @@
-# ThinkDeep Tool - Extended Reasoning Partner
+# ThinkDeep Tool
 
-**Get a second opinion to augment Claude's own extended thinking**
-
-The `thinkdeep` tool provides extended reasoning capabilities, offering a second perspective to augment Claude's analysis. It's designed to challenge assumptions, find edge cases, and provide alternative approaches to complex problems.
+Multi-stage investigation for complex problems. Challenges assumptions and finds edge cases.
 
 ## Thinking Mode
 
-**Default is `high` (16,384 tokens) for deep analysis.** Claude will automatically choose the best mode based on complexity - use `low` for quick validations, `medium` for standard problems, `high` for complex issues (default), or `max` for extremely complex challenges requiring deepest analysis.
+Default: `high` (16,384 tokens). Claude auto-selects based on complexity.
 
 ## Example Prompt
 
@@ -15,17 +13,15 @@ Think deeper about my authentication design with pro using max thinking mode and
 with the best architecture for my project
 ```
 
-## Key Features
+## Features
 
-- **Uses Gemini's specialized thinking models** for enhanced reasoning capabilities
-- **Provides a second opinion** on Claude's analysis
-- **Challenges assumptions** and identifies edge cases Claude might miss
-- **Offers alternative perspectives** and approaches
-- **Validates architectural decisions** and design patterns
-- **File reference support**: `"Use gemini to think deeper about my API design with reference to api/routes.py"`
-- **Image support**: Analyze architectural diagrams, flowcharts, design mockups: `"Think deeper about this system architecture diagram with gemini pro using max thinking mode"`
-- **Enhanced Critical Evaluation (v2.10.0)**: After Gemini's analysis, Claude is prompted to critically evaluate the suggestions, consider context and constraints, identify risks, and synthesize a final recommendation - ensuring a balanced, well-considered solution
-- **Web search capability**: When enabled (default: true), identifies areas where current documentation or community solutions would strengthen the analysis and suggests specific searches for Claude
+- Second opinion on analysis
+- Challenges assumptions and edge cases
+- Alternative approaches
+- Architecture validation
+- File and image support
+- Critical evaluation of suggestions
+- Web search for documentation
 
 ## Tool Parameters
 
@@ -67,14 +63,6 @@ with the best architecture for my project
 "Think deeper about the security implications of this authentication code with pro"
 ```
 
-## Best Practices
-
-- **Provide detailed context**: Share your current thinking, constraints, and objectives
-- **Be specific about focus areas**: Mention what aspects need deeper analysis
-- **Include relevant files**: Reference code, documentation, or configuration files
-- **Use appropriate thinking modes**: Higher modes for complex problems, lower for quick validations
-- **Leverage visual context**: Include diagrams or mockups for architectural discussions
-- **Build on discussions**: Use continuation to extend previous analyses
 
 ## Enhanced Critical Evaluation Process
 

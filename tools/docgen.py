@@ -160,19 +160,19 @@ class DocgenTool(WorkflowTool):
 
     def requires_model(self) -> bool:
         """
-        Docgen tool doesn't require model resolution at the MCP boundary.
+        Docgen tool supports optional model selection for expert analysis.
 
-        The docgen tool is a self-contained workflow tool that guides the CLI agent through
-        systematic documentation generation without calling external AI models.
+        The docgen tool can optionally use external AI models to validate
+        documentation completeness and quality after Claude's analysis.
 
         Returns:
-            bool: False - docgen doesn't need external AI model access
+            bool: True - docgen supports optional external AI model access
         """
-        return False
+        return True
 
     def requires_expert_analysis(self) -> bool:
-        """Docgen is self-contained and doesn't need expert analysis."""
-        return False
+        """Docgen supports optional expert analysis for documentation validation."""
+        return True
 
     def get_workflow_request_model(self):
         """Return the docgen-specific request model."""
@@ -240,7 +240,7 @@ class DocgenTool(WorkflowTool):
 
         # Exclude common fields that documentation generation doesn't need
         excluded_common_fields = [
-            "model",  # Documentation doesn't need external model selection
+            # "model" removed - now supports optional model selection for expert analysis
             "temperature",  # Documentation doesn't need temperature control
             "thinking_mode",  # Documentation doesn't need thinking mode
             "use_websearch",  # Documentation doesn't need web search
@@ -250,7 +250,7 @@ class DocgenTool(WorkflowTool):
         return WorkflowSchemaBuilder.build_schema(
             tool_specific_fields=self.get_tool_fields(),
             required_fields=self.get_required_fields(),  # Include docgen-specific required fields
-            model_field_schema=None,  # Exclude model field - docgen doesn't need external model selection
+            model_field_schema=self.get_model_field_schema(),  # Include model field for optional expert analysis
             auto_mode=False,  # Force non-auto mode to prevent model field addition
             tool_name=self.get_name(),
             excluded_workflow_fields=excluded_workflow_fields,
@@ -321,12 +321,112 @@ class DocgenTool(WorkflowTool):
             ]
 
     def should_call_expert_analysis(self, consolidated_findings, request=None) -> bool:
-        """Docgen is self-contained and doesn't need expert analysis."""
-        return False
+        """
+        Decide when to call external model for documentation validation.
+
+        Expert analysis is called when:
+        - User hasn't disabled assistant model
+        - We have documented files to validate
+        - We're at completion stage (not mid-progress)
+        """
+        # Check if user requested to skip assistant model
+        if request and not self.get_request_use_assistant_model(request):
+            return False
+
+        # Only call expert analysis when we have completed documentation
+        # and have files to validate
+        num_files_documented = self.get_request_num_files_documented(request) if request else 0
+        total_files = self.get_request_total_files_to_document(request) if request else 0
+
+        # Call expert when all files are documented
+        return (
+            num_files_documented > 0
+            and num_files_documented == total_files
+            and not (request and request.next_step_required)
+        )
 
     def prepare_expert_analysis_context(self, consolidated_findings) -> str:
-        """Docgen doesn't use expert analysis."""
-        return ""
+        """Prepare context for external model to validate documentation completeness and quality."""
+        context_parts = [
+            f"=== DOCUMENTATION REQUEST ===\n{self.initial_request or 'Documentation generation initiated'}\n=== END REQUEST ==="
+        ]
+
+        # Add documentation progress summary
+        num_files_documented = 0
+        total_files_to_document = 0
+
+        # Extract counters from findings
+        if hasattr(self, "consolidated_findings") and self.consolidated_findings:
+            # Try to get from last step's data
+            for finding in self.consolidated_findings.findings:
+                if "num_files_documented" in str(finding):
+                    # Extract numbers from findings text
+                    import re
+
+                    nums = re.findall(r"(\d+)\s*(?:out of|/)\s*(\d+)", str(finding))
+                    if nums:
+                        num_files_documented = int(nums[-1][0])
+                        total_files_to_document = int(nums[-1][1])
+
+        context_parts.append(
+            f"\n=== DOCUMENTATION PROGRESS ===\n"
+            f"Files Documented: {num_files_documented}/{total_files_to_document}\n"
+            f"Documentation Configuration:\n"
+            f"- Complexity Analysis: Enabled\n"
+            f"- Call Flow Documentation: Enabled\n"
+            f"- Update Existing Docs: Enabled\n"
+            f"- Inline Comments: Enabled\n"
+            f"=== END PROGRESS ==="
+        )
+
+        # Add documentation findings
+        if consolidated_findings.findings:
+            findings_text = "\n".join(consolidated_findings.findings[-3:])  # Last 3 findings
+            context_parts.append(f"\n=== DOCUMENTATION FINDINGS ===\n{findings_text}\n=== END FINDINGS ===")
+
+        # Add documented files list
+        if consolidated_findings.relevant_files:
+            files_text = "\n".join(f"- {file}" for file in consolidated_findings.relevant_files)
+            context_parts.append(f"\n=== DOCUMENTED FILES ===\n{files_text}\n=== END FILES ===")
+
+        # Add documented methods/functions if available
+        if consolidated_findings.relevant_context:
+            # Convert set to list for slicing
+            methods_list = list(consolidated_findings.relevant_context)
+            methods_text = "\n".join(
+                f"- {method}" for method in methods_list[:20]
+            )  # Limit to 20
+            if len(methods_list) > 20:
+                methods_text += f"\n... and {len(methods_list) - 20} more"
+            context_parts.append(f"\n=== DOCUMENTED FUNCTIONS/METHODS ===\n{methods_text}\n=== END FUNCTIONS ===")
+
+        # Add any issues or bugs found during documentation
+        if consolidated_findings.issues_found:
+            issues_text = "\n".join(
+                f"[{issue.get('severity', 'unknown').upper()}] {issue.get('description', 'No description')}"
+                for issue in consolidated_findings.issues_found
+            )
+            context_parts.append(
+                f"\n=== BUGS/ISSUES FOUND (NOT FIXED) ===\n{issues_text}\n"
+                f"IMPORTANT: These issues were discovered during documentation but NOT fixed.\n"
+                f"=== END ISSUES ==="
+            )
+
+        # Add validation request
+        context_parts.append(
+            "\n=== VALIDATION REQUEST ===\n"
+            "Please validate the documentation work:\n"
+            "1. Verify all files have been properly documented\n"
+            "2. Check documentation completeness and quality\n"
+            "3. Confirm complexity analysis is included where appropriate\n"
+            "4. Validate call flow documentation accuracy\n"
+            "5. Identify any missed functions or classes\n"
+            "6. Suggest improvements if documentation is incomplete\n"
+            "7. Confirm any bugs found were properly reported (not fixed)\n"
+            "=== END REQUEST ==="
+        )
+
+        return "\n".join(context_parts)
 
     def get_step_guidance(self, step_number: int, confidence: str, request) -> dict[str, Any]:
         """
@@ -469,8 +569,15 @@ class DocgenTool(WorkflowTool):
 
     def should_skip_expert_analysis(self, request, consolidated_findings) -> bool:
         """
-        Docgen tool skips expert analysis when the CLI agent has "certain" confidence.
+        Docgen tool skips expert analysis when:
+        - The CLI agent has "certain" confidence, OR
+        - User explicitly disabled assistant model
         """
+        # Check if user disabled assistant model
+        if not self.get_request_use_assistant_model(request):
+            return True
+
+        # Skip if agent has certain confidence
         return request.confidence == "certain" and not request.next_step_required
 
     # Override inheritance hooks for docgen-specific behavior
@@ -524,6 +631,14 @@ class DocgenTool(WorkflowTool):
             return request.total_files_to_document or 0
         except AttributeError:
             return 0
+
+    def get_request_use_assistant_model(self, request) -> bool:
+        """Get use_assistant_model from request. Override for custom handling."""
+        try:
+            # Default to True if not specified
+            return getattr(request, "use_assistant_model", True)
+        except AttributeError:
+            return True
 
     def get_skip_expert_analysis_status(self) -> str:
         """Docgen-specific expert analysis skip status."""

@@ -1,8 +1,6 @@
-# Version Tool - Server Information
+# Version Tool
 
-**Get server version, configuration details, and list of available tools**
-
-The `version` tool provides information about the Zen MCP Server version, configuration details, and system capabilities. This is useful for debugging, understanding server capabilities, and verifying your installation.
+Shows server version, configuration, and available tools.
 
 ## Usage
 
@@ -10,13 +8,13 @@ The `version` tool provides information about the Zen MCP Server version, config
 "Get zen to show its version"
 ```
 
-## Key Features
+## Features
 
-- **Server version information**: Current version and build details
-- **Configuration overview**: Active settings and capabilities
-- **Tool inventory**: Complete list of available tools and their status
-- **System health**: Basic server status and connectivity verification
-- **Debug information**: Helpful details for troubleshooting
+- Server version and build details
+- Configuration and capabilities
+- Tool inventory and status
+- System health verification
+- Debug information
 
 ## Output Information
 
@@ -112,16 +110,4 @@ The version tool can help diagnose common issues:
 
 This tool requires no parameters - it provides comprehensive server information automatically.
 
-## Best Practices
 
-- **Include in bug reports**: Always include version output when reporting issues
-- **Check after updates**: Verify version information after server updates
-- **Monitor system health**: Use periodically to check server status
-- **Validate configuration**: Confirm settings match your expectations
-
-## When to Use Version vs Other Tools
-
-- **Use `version`** for: Server diagnostics, configuration verification, troubleshooting
-- **Use `listmodels`** for: Model availability and capability information
-- **Use other tools** for: Actual development and analysis tasks
-- **Use with support**: Essential information for getting help with issues

@@ -1,31 +1,21 @@
-# Analyze Tool - Smart File Analysis
+# Analyze Tool
 
-**General-purpose code understanding and exploration through workflow-driven investigation**
-
-The `analyze` tool provides comprehensive code analysis and understanding capabilities, helping you explore codebases, understand architecture, and identify patterns across files and directories. This workflow tool guides Claude through systematic investigation of code structure, patterns, and architectural decisions across multiple steps, gathering comprehensive insights before providing expert analysis.
+Systematic code analysis through step-by-step investigation. Examines architecture, performance, security, and code quality patterns.
 
 ## Thinking Mode
 
-**Default is `medium` (8,192 tokens).** Use `high` for architecture analysis (comprehensive insights worth the cost) or `low` for quick file overviews (save ~6k tokens).
+Default: `medium` (8,192 tokens). Use `high` for architecture analysis or `low` for quick overviews.
 
-## How the Workflow Works
+## Workflow
 
-The analyze tool implements a **structured workflow** for thorough code understanding:
-
-**Investigation Phase (Claude-Led):**
-1. **Step 1**: Claude describes the analysis plan and begins examining code structure
-2. **Step 2+**: Claude investigates architecture, patterns, dependencies, and design decisions
-3. **Throughout**: Claude tracks findings, relevant files, insights, and confidence levels
-4. **Completion**: Once analysis is comprehensive, Claude signals completion
+**Investigation Phase:**
+1. Claude plans analysis and examines code structure
+2. Investigates patterns, dependencies, design decisions
+3. Tracks findings and confidence levels
+4. Signals completion when comprehensive
 
 **Expert Analysis Phase:**
-After Claude completes the investigation (unless confidence is **certain**):
-- Complete analysis summary with all findings
-- Architectural insights and pattern identification
-- Strategic improvement recommendations
-- Final expert assessment based on investigation
-
-This workflow ensures methodical analysis before expert insights, resulting in deeper understanding and more valuable recommendations.
+Provides final assessment with strategic recommendations (skipped if confidence is `certain`).
 
 ## Example Prompts
 
@@ -35,17 +25,15 @@ This workflow ensures methodical analysis before expert insights, resulting in d
 "Get gemini to do an architecture analysis of the src/ directory"
 ```
 
-## Key Features
+## Features
 
-- **Analyzes single files or entire directories** with intelligent file filtering
-- **Supports specialized analysis types**: architecture, performance, security, quality, general
-- **Uses file paths (not content) for clean terminal output** while processing full content
-- **Can identify patterns, anti-patterns, and refactoring opportunities**
-- **Large codebase support**: Handle massive codebases with 1M token context models
-- **Cross-file relationship mapping**: Understand dependencies and interactions
-- **Architecture visualization**: Describe system structure and component relationships
-- **Image support**: Analyze architecture diagrams, UML charts, flowcharts: `"Analyze this system diagram with gemini to understand the data flow and identify bottlenecks"`
-- **Web search capability**: When enabled with `use_websearch` (default: true), the model can request Claude to perform web searches and share results back to enhance analysis with current documentation, design patterns, and best practices
+- Analyzes files or directories
+- Analysis types: architecture, performance, security, quality, general
+- Identifies patterns and refactoring opportunities
+- Handles large codebases with 1M token models
+- Maps cross-file dependencies
+- Image support for diagrams
+- Web search for documentation (default: enabled)
 
 ## Tool Parameters
 
@@ -76,28 +64,13 @@ This workflow ensures methodical analysis before expert insights, resulting in d
 
 ## Analysis Types
 
-**General Analysis (default):**
-- Overall code structure and organization
-- Key components and their responsibilities
-- Data flow and control flow
-- Design patterns and architectural decisions
+**General (default):** Code structure, components, data flow, patterns
 
-**Architecture Analysis:**
-- System-level design and component relationships
-- Module dependencies and coupling
-- Separation of concerns and layering
-- Scalability and maintainability considerations
+**Architecture:** System design, dependencies, coupling, scalability
 
-**Performance Analysis:**
-- Potential bottlenecks and optimization opportunities
-- Algorithmic complexity assessment
-- Memory usage patterns
-- I/O and database interaction efficiency
+**Performance:** Bottlenecks, complexity, memory, I/O efficiency
 
-**Security Analysis:**
-- Security patterns and potential vulnerabilities
-- Input validation and sanitization
-- Authentication and authorization mechanisms
+**Security:** Vulnerabilities, validation, authentication
 - Data protection and privacy considerations
 
 **Quality Analysis:**
@@ -155,14 +128,6 @@ This workflow ensures methodical analysis before expert insights, resulting in d
 - Prioritized list of improvements
 - Implementation guidance and examples
 
-## Best Practices
-
-- **Be specific about goals**: Clearly state what you want to understand or discover
-- **Use appropriate analysis types**: Choose the type that matches your needs
-- **Include related files**: Analyze modules together for better context understanding
-- **Leverage large context models**: Use Gemini Pro for comprehensive codebase analysis
-- **Combine with visual context**: Include architecture diagrams or documentation
-- **Use continuation**: Build on previous analysis for deeper understanding
 
 ## Advanced Features
 

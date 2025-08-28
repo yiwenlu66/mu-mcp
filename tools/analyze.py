@@ -34,50 +34,19 @@ logger = logging.getLogger(__name__)
 
 # Tool-specific field descriptions for analyze workflow
 ANALYZE_WORKFLOW_FIELD_DESCRIPTIONS = {
-    "step": (
-        "The analysis plan. Step 1: State your strategy, including how you will map the codebase structure, "
-        "understand business logic, and assess code quality, performance implications, and architectural patterns. "
-        "Later steps: Report findings and adapt the approach as new insights emerge."
-    ),
-    "step_number": (
-        "The index of the current step in the analysis sequence, beginning at 1. Each step should build upon or "
-        "revise the previous one."
-    ),
-    "total_steps": (
-        "Your current estimate for how many steps will be needed to complete the analysis. "
-        "Adjust as new findings emerge."
-    ),
-    "next_step_required": (
-        "Set to true if you plan to continue the investigation with another step. False means you believe the "
-        "analysis is complete and ready for expert validation."
-    ),
-    "findings": (
-        "Summary of discoveries from this step, including architectural patterns, tech stack assessment, scalability characteristics, "
-        "performance implications, maintainability factors, and strategic improvement opportunities. "
-        "IMPORTANT: Document both strengths (good patterns, solid architecture) and concerns (tech debt, overengineering, unnecessary complexity). "
-        "In later steps, confirm or update past findings with additional evidence."
-    ),
-    "files_checked": (
-        "List all files examined (absolute paths). Include even ruled-out files to track exploration path."
-    ),
-    "relevant_files": (
-        "Subset of files_checked directly relevant to analysis findings (absolute paths). Include files with "
-        "significant patterns, architectural decisions, or strategic improvement opportunities."
-    ),
-    "relevant_context": (
-        "List methods/functions central to analysis findings, in 'ClassName.methodName' or 'functionName' format. "
-        "Prioritize those demonstrating key patterns, architectural decisions, or improvement opportunities."
-    ),
-    "backtrack_from_step": ("If an earlier finding needs revision, specify the step number to backtrack from."),
-    "images": (
-        "Optional absolute paths to architecture diagrams or visual references that help with analysis context."
-    ),
-    "confidence": (
-        "Your confidence in the analysis: exploring, low, medium, high, very_high, almost_certain, or certain. "
-        "'certain' indicates the analysis is complete and ready for validation."
-    ),
-    "analysis_type": "Type of analysis to perform (architecture, performance, security, quality, general)",
-    "output_format": "How to format the output (summary, detailed, actionable)",
+    "step": "Analysis strategy and findings",
+    "step_number": "Current step (starts at 1)",
+    "total_steps": "Estimated steps needed",
+    "next_step_required": "Continue? False = ready for validation",
+    "findings": "Architecture, tech stack, patterns found (strengths + concerns)",
+    "files_checked": "All examined files (absolute paths)",
+    "relevant_files": "Files with key patterns (absolute paths)",
+    "relevant_context": "Key methods/functions (Class.method format)",
+    "backtrack_from_step": "Step to backtrack from if needed",
+    "images": "Architecture diagrams (absolute paths)",
+    "confidence": "exploring/low/medium/high/very_high/almost_certain/certain",
+    "analysis_type": "architecture/performance/security/quality/general",
+    "output_format": "summary/detailed/actionable",
 }
 
 

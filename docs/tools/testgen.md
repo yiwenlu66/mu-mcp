@@ -1,35 +1,24 @@
-# TestGen Tool - Comprehensive Test Generation
+# TestGen Tool
 
-**Generates thorough test suites with edge case coverage through workflow-driven investigation**
-
-The `testgen` tool creates comprehensive test suites by analyzing your code paths, understanding intricate dependencies, and identifying realistic edge cases and failure scenarios that need test coverage. This workflow tool guides Claude through systematic investigation of code functionality, critical paths, edge cases, and integration points across multiple steps before generating comprehensive tests with realistic failure mode analysis.
+Generates test suites with edge case coverage for specific functions or classes.
 
 ## Thinking Mode
 
-**Default is `medium` (8,192 tokens) for extended thinking models.** Use `high` for complex systems with many interactions or `max` for critical systems requiring exhaustive test coverage.
+Default: `medium` (8,192 tokens). Use `high` for complex systems or `max` for exhaustive coverage.
 
-## How the Workflow Works
+## Workflow
 
-The testgen tool implements a **structured workflow** for comprehensive test generation:
-
-**Investigation Phase (Claude-Led):**
-1. **Step 1**: Claude describes the test generation plan and begins analyzing code functionality
-2. **Step 2+**: Claude examines critical paths, edge cases, error handling, and integration points
-3. **Throughout**: Claude tracks findings, test scenarios, and coverage gaps
-4. **Completion**: Once investigation is thorough, Claude signals completion
+**Investigation Phase:**
+1. Claude analyzes code functionality
+2. Examines critical paths and edge cases
+3. Tracks test scenarios and coverage gaps
 
 **Test Generation Phase:**
-After Claude completes the investigation:
-- Complete test scenario catalog with all edge cases
-- Framework-specific test generation
-- Realistic failure mode coverage
-- Final test suite with comprehensive coverage
-
-This workflow ensures methodical analysis before test generation, resulting in more thorough and valuable test suites.
+Creates framework-specific tests with edge case coverage.
 
 ## Model Recommendation
 
-Test generation excels with extended reasoning models like Gemini Pro or O3, which can analyze complex code paths, understand intricate dependencies, and identify comprehensive edge cases. The combination of large context windows and advanced reasoning enables generation of thorough test suites that cover realistic failure scenarios and integration points that shorter-context models might overlook.
+Gemini Pro or O3 recommended for analyzing complex code paths and dependencies.
 
 ## Example Prompts
 
@@ -163,14 +152,6 @@ The tool automatically detects and generates tests for:
 - Load handling
 - Scalability verification
 
-## Best Practices
-
-- **Be specific about scope**: Target specific functions/classes rather than requesting tests for everything
-- **Provide test examples**: Include existing test files for pattern consistency
-- **Focus on critical paths**: Prioritize testing of business-critical functionality
-- **Include visual context**: Screenshots or mockups for UI component testing
-- **Describe testing objectives**: Explain what aspects are most important to test
-- **Consider test maintenance**: Request readable, maintainable test code
 
 ## Test Quality Features
 

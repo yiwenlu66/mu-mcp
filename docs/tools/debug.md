@@ -1,10 +1,6 @@
-# Debug Tool - Systematic Investigation & Expert Analysis
+# Debug Tool
 
-**Step-by-step investigation followed by expert debugging assistance**
-
-The `debug` workflow guides Claude through a systematic investigation process where Claude performs methodical code 
-examination, evidence collection, and hypothesis formation across multiple steps. Once the investigation is complete, 
-the tool provides expert analysis from the selected AI model (optionally) based on all gathered findings.
+Root cause analysis through systematic investigation. Forces evidence gathering before conclusions.
 
 ## Example Prompts
 
@@ -17,37 +13,25 @@ You can also ask it to debug on its own, no external model required (**recommend
 Use debug tool to find out why the app is crashing, here are some app logs [paste app logs] and a crash trace: [paste crash trace]
 ```
 
-## How It Works 
-
-The debug tool implements a **systematic investigation methodology** where Claude is guided through structured debugging steps:
+## Workflow
 
 **Investigation Phase:**
-1. **Step 1**: Claude describes the issue and begins thinking deeply about possible underlying causes, side-effects, and contributing factors
-2. **Step 2+**: Claude examines relevant code, traces errors, tests hypotheses, and gathers evidence
-3. **Throughout**: Claude tracks findings, relevant files, methods, and evolving hypotheses with confidence levels
-4. **Backtracking**: Claude can revise previous steps when new insights emerge
-5. **Completion**: Once investigation is thorough, Claude signals completion
+1. Claude analyzes issue and forms initial hypotheses
+2. Examines code, traces errors, tests theories
+3. Tracks findings with confidence levels
+4. Can backtrack when new insights emerge
 
 **Expert Analysis Phase:**
-After Claude completes the investigation, it automatically calls the selected AI model with (unless confidence is **certain**, 
-in which case expert analysis is bypassed):
-- Complete investigation summary with all steps and findings
-- Relevant files and methods identified during investigation  
-- Final hypothesis and confidence assessment
-- Error context and supporting evidence
-- Visual debugging materials if provided
+Provides final root cause and fix recommendations (skipped if confidence is `certain`).
 
-This structured approach ensures Claude performs methodical groundwork before expert analysis, resulting in significantly better debugging outcomes and more efficient token usage.
+**Note:** Include "don't use any other model" to use Claude only.
 
-**Special Note**: If you want Claude to perform the entire debugging investigation without calling another model, you can include "don't use any other model" in your prompt, and Claude will complete the full workflow independently.
+## Features
 
-## Key Features
-
-- **Multi-step investigation process** with evidence collection and hypothesis evolution
-- **Systematic code examination** with file and method tracking throughout investigation
-- **Confidence assessment and revision** capabilities for investigative steps
-- **Backtracking support** to revise previous steps when new insights emerge
-- **Expert analysis integration** that provides final debugging recommendations based on complete investigation
+- Multi-step investigation with evidence collection
+- Hypothesis evolution and confidence tracking
+- Backtracking when new insights emerge
+- Expert analysis based on investigation
 - **Error context support**: Stack traces, logs, and runtime information
 - **Visual debugging**: Include error screenshots, stack traces, console output
 - **Conversation threading**: Continue investigations across multiple sessions
@@ -156,22 +140,6 @@ Once investigation is complete, the selected AI model performs:
 - CPU-intensive operations
 - I/O bottlenecks
 
-## Best Practices
-
-**For Investigation Steps:**
-- **Be thorough in step descriptions**: Explain what you're examining and why
-- **Track all files examined**: Include even files that don't contain the bug (tracks investigation path)
-- **Document findings clearly**: Summarize discoveries, suspicious patterns, and evidence
-- **Evolve hypotheses**: Update theories as investigation progresses
-- **Use backtracking wisely**: Revise previous steps when new insights emerge
-- **Include visual evidence**: Screenshots, error dialogs, console output
-
-**For Initial Problem Description:**
-- **Provide complete error context**: Full stack traces, error messages, and logs
-- **Describe expected vs actual behavior**: Clear symptom description
-- **Include environment details**: Runtime versions, configuration, deployment context
-- **Mention previous attempts**: What debugging steps have already been tried
-- **Be specific about occurrence**: When, where, and how the issue manifests
 
 ## Advanced Features
 

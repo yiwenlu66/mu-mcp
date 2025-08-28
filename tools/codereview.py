@@ -34,37 +34,22 @@ logger = logging.getLogger(__name__)
 
 # Tool-specific field descriptions for code review workflow
 CODEREVIEW_WORKFLOW_FIELD_DESCRIPTIONS = {
-    "step": (
-        "Review plan. Step 1: State strategy. Later: Report findings. "
-        "MUST examine quality, security, performance, architecture. Use 'relevant_files' for code. NO large snippets."
-    ),
-    "step_number": "Current step index in review sequence (starts at 1). Build upon previous steps.",
-    "total_steps": (
-        "Estimated steps needed to complete the review. "
-        "IMPORTANT: For external validation, max 2 steps. For internal validation, use 1 step. "
-        "When continuation_id is provided (continuing a previous conversation), set to 2 max for external, 1 for internal."
-    ),
-    "next_step_required": (
-        "True to continue with another step, False when review is complete. "
-        "CRITICAL for external validation: Set to True on step 1, then False on step 2. "
-        "For internal validation: Set to False immediately. "
-        "When continuation_id is provided: Follow the same rules based on validation type."
-    ),
-    "findings": (
-        "Discoveries: quality, security, performance, architecture. "
-        "Document positive+negative. Update in later steps."
-    ),
-    "files_checked": "All examined files (absolute paths), including ruled-out ones.",
-    "relevant_files": "Step 1: All files/dirs for review. Final: Subset with key findings (issues, patterns, decisions).",
-    "relevant_context": "Methods/functions central to findings: 'Class.method' or 'function'. Focus on issues/patterns.",
-    "issues_found": "Issues with 'severity' (critical/high/medium/low) and 'description'. Vulnerabilities, performance, quality.",
-    "review_validation_type": "'external' (default, expert model) or 'internal' (no expert). Default external unless user specifies.",
-    "backtrack_from_step": "Step number to backtrack from if revision needed.",
-    "images": "Optional diagrams, mockups, visuals for review context (absolute paths). Include if materially helpful.",
-    "review_type": "Review type: full, security, performance, quick.",
-    "focus_on": "Specific aspects or context for areas of concern.",
-    "standards": "Coding standards to enforce.",
-    "severity_filter": "Minimum severity to report.",
+    "step": "Review plan and findings. No large code snippets",
+    "step_number": "Current step (starts at 1)",
+    "total_steps": "Steps needed (external: max 2, internal: 1)",
+    "next_step_required": "Continue? (external: True→False, internal: False)",
+    "findings": "Quality/performance/architecture discoveries",
+    "files_checked": "All examined files (absolute paths)",
+    "relevant_files": "Files with findings (absolute paths)",
+    "relevant_context": "Key methods/functions (Class.method format)",
+    "issues_found": "Issues with severity and description",
+    "review_validation_type": "external (with expert) or internal",
+    "backtrack_from_step": "Step to backtrack from if needed",
+    "images": "Diagrams, mockups (absolute paths)",
+    "review_type": "full/security/performance/quick",
+    "focus_on": "Specific aspects to focus on",
+    "standards": "Coding standards to enforce",
+    "severity_filter": "Minimum severity to report",
 }
 
 

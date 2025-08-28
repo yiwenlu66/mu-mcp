@@ -20,57 +20,30 @@ logger = logging.getLogger(__name__)
 
 # Shared field descriptions to avoid duplication
 COMMON_FIELD_DESCRIPTIONS = {
-    "model": (
-        "Model to use. See tool's input schema for available models. "
-        "Use 'auto' to let Claude select the best model for the task."
-    ),
-    "temperature": (
-        "Lower values: focused/deterministic; higher: creative. Tool-specific defaults apply if unspecified."
-    ),
-    "thinking_mode": (
-        "Thinking depth: minimal (0.5%), low (8%), medium (33%), high (67%), "
-        "max (100% of model max). Higher modes: deeper reasoning but slower."
-    ),
-    "use_websearch": (
-        "Enable web search for docs and current info. Model can request Claude to perform web-search for "
-        "best practices, framework docs, solution research, latest API information."
-    ),
-    "continuation_id": (
-        "Unique thread continuation ID for multi-turn conversations. Reuse last continuation_id "
-        "when continuing discussion (unless user provides different ID) using exact unique identifer. "
-        "Embeds complete conversation history. Build upon history without repeating. "
-        "Focus on new insights. Works across different tools."
-    ),
-    "images": (
-        "Optional images for visual context. MUST be absolute paths or base64. "
-        "Use when user mentions images. Describe image contents. "
-    ),
-    "files": ("Optional files for context (FULL absolute paths to real files/folders - DO NOT SHORTEN)"),
+    "model": "Model to use (see schema for options, 'auto' = Claude selects)",
+    "temperature": "0.0=focused, 1.0=creative (tool defaults if unspecified)",
+    "thinking_mode": "minimal/low/medium/high/max - depth vs speed tradeoff",
+    "use_websearch": "Enable web search for docs and current info",
+    "continuation_id": "Thread ID to continue conversation across tools",
+    "images": "Image paths (absolute) or base64 data",
+    "files": "Absolute paths to files/folders for context",
 }
 
 # Workflow-specific field descriptions
 WORKFLOW_FIELD_DESCRIPTIONS = {
-    "step": "Current work step content and findings from your overall work",
-    "step_number": "Current step number in work sequence (starts at 1)",
-    "total_steps": "Estimated total steps needed to complete work",
-    "next_step_required": "Whether another work step is needed. When false, aim to reduce total_steps to match step_number to avoid mismatch.",
-    "findings": "Important findings, evidence and insights discovered in this step",
-    "files_checked": "List of files examined during this work step",
-    "relevant_files": "Files identified as relevant to issue/goal (FULL absolute paths to real files/folders - DO NOT SHORTEN)",
-    "relevant_context": "Methods/functions identified as involved in the issue",
-    "issues_found": "Issues identified with severity levels during work",
-    "confidence": (
-        "Confidence level: exploring (just starting), low (early investigation), "
-        "medium (some evidence), high (strong evidence), very_high (comprehensive understanding), "
-        "almost_certain (near complete confidence), certain (100% confidence locally - no external validation needed)"
-    ),
-    "hypothesis": "Current theory about issue/goal based on work",
-    "backtrack_from_step": "Step number to backtrack from if work needs revision",
-    "use_assistant_model": (
-        "Use assistant model for expert analysis after workflow steps. "
-        "False skips expert analysis, relies solely on Claude's investigation. "
-        "Defaults to True for comprehensive validation."
-    ),
+    "step": "Current step content and findings",
+    "step_number": "Current step (starts at 1)",
+    "total_steps": "Estimated total steps needed",
+    "next_step_required": "Need another step? (false = adjust total_steps to match)",
+    "findings": "Findings and insights from this step",
+    "files_checked": "Files examined",
+    "relevant_files": "Relevant files (absolute paths)",
+    "relevant_context": "Involved methods/functions",
+    "issues_found": "Issues with severity levels",
+    "confidence": "exploring/low/medium/high/very_high/almost_certain/certain",
+    "hypothesis": "Current theory",
+    "backtrack_from_step": "Step to backtrack from",
+    "use_assistant_model": "Use expert analysis (default: True)",
 }
 
 

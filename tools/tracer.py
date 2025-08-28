@@ -37,47 +37,18 @@ logger = logging.getLogger(__name__)
 
 # Tool-specific field descriptions for tracer workflow
 TRACER_WORKFLOW_FIELD_DESCRIPTIONS = {
-    "step": (
-        "The plan for the current tracing step. Step 1: State the tracing strategy. Later steps: Report findings and adapt the plan. "
-        "CRITICAL: For 'precision' mode, focus on execution flow and call chains. For 'dependencies' mode, focus on structural relationships. "
-        "If trace_mode is 'ask' in step 1, you MUST prompt the user to choose a mode."
-    ),
-    "step_number": (
-        "The index of the current step in the tracing sequence, beginning at 1. Each step should build upon or "
-        "revise the previous one."
-    ),
-    "total_steps": (
-        "Your current estimate for how many steps will be needed to complete the tracing analysis. "
-        "Adjust as new findings emerge."
-    ),
-    "next_step_required": (
-        "Set to true if you plan to continue the investigation with another step. False means you believe the "
-        "tracing analysis is complete and ready for final output formatting."
-    ),
-    "findings": (
-        "Summary of discoveries from this step, including execution paths, dependency relationships, call chains, and structural patterns. "
-        "IMPORTANT: Document both direct (immediate calls) and indirect (transitive, side effects) relationships."
-    ),
-    "files_checked": (
-        "List all files examined (absolute paths). Include even ruled-out files to track exploration path."
-    ),
-    "relevant_files": (
-        "Subset of files_checked directly relevant to the tracing target (absolute paths). Include implementation files, "
-        "dependencies, or files demonstrating key relationships."
-    ),
-    "relevant_context": (
-        "List methods/functions central to the tracing analysis, in 'ClassName.methodName' or 'functionName' format. "
-        "Prioritize those in the execution flow or dependency chain."
-    ),
-    "confidence": (
-        "Your confidence in the tracing analysis. Use: 'exploring', 'low', 'medium', 'high', 'very_high', 'almost_certain', 'certain'. "
-        "CRITICAL: 'certain' implies the analysis is 100% complete locally and PREVENTS external model validation."
-    ),
-    "trace_mode": "Type of tracing: 'ask' (default - prompts user to choose mode), 'precision' (execution flow) or 'dependencies' (structural relationships)",
-    "target_description": (
-        "Description of what to trace and WHY. Include context about what you're trying to understand or analyze."
-    ),
-    "images": ("Optional paths to architecture diagrams or flow charts that help understand the tracing context."),
+    "step": "Tracing strategy and findings. Mode-specific focus",
+    "step_number": "Current step (starts at 1)",
+    "total_steps": "Estimated steps needed",
+    "next_step_required": "Continue? False = ready for output",
+    "findings": "Execution paths, dependencies, call chains found",
+    "files_checked": "All examined files (absolute paths)",
+    "relevant_files": "Files relevant to trace target (absolute paths)",
+    "relevant_context": "Key methods/functions (Class.method format)",
+    "confidence": "exploring/low/medium/high/very_high/almost_certain/certain",
+    "trace_mode": "ask/precision (execution)/dependencies (structure)",
+    "target_description": "What to trace and why",
+    "images": "Diagrams or flow charts (absolute paths)",
 }
 
 

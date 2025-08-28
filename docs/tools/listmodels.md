@@ -1,8 +1,6 @@
-# ListModels Tool - List Available Models
+# ListModels Tool
 
-**Display all available AI models organized by provider**
-
-The `listmodels` tool shows which providers are configured, available models, their aliases, context windows, and capabilities. This is useful for understanding what models can be used and their characteristics.
+Shows available AI models, aliases, context windows, and capabilities.
 
 ## Usage
 
@@ -10,14 +8,13 @@ The `listmodels` tool shows which providers are configured, available models, th
 "Use zen to list available models"
 ```
 
-## Key Features
+## Features
 
-- **Provider organization**: Shows all configured providers and their status
-- **Model capabilities**: Context windows, thinking mode support, and special features
-- **Alias mapping**: Shows shorthand names and their full model mappings
-- **Configuration status**: Indicates which providers are available based on API keys
-- **Context window information**: Helps you choose models based on your content size needs
-- **Capability overview**: Understanding which models support extended thinking, vision, etc.
+- Provider organization and status
+- Model capabilities and context windows
+- Alias mappings
+- Configuration status
+- Extended thinking and vision support
 
 ## Output Information
 
@@ -90,16 +87,4 @@ If you've set model usage restrictions via environment variables, the tool will 
 
 This tool requires no parameters - it simply queries the server configuration and displays all available information.
 
-## Best Practices
 
-- **Check before planning**: Use this tool to understand your options before starting complex tasks
-- **Verify configuration**: Confirm your API keys are working as expected
-- **Choose appropriate models**: Match model capabilities to your specific needs
-- **Understand limits**: Be aware of context windows when working with large files
-
-## When to Use ListModels vs Other Tools
-
-- **Use `listmodels`** for: Understanding available options and model capabilities
-- **Use `chat`** for: General discussions about which model to use for specific tasks
-- **Use `version`** for: Server configuration and version information
-- **Use other tools** for: Actual analysis, debugging, or development work

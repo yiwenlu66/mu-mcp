@@ -1,35 +1,27 @@
-# CodeReview Tool - Professional Code Review
+# CodeReview Tool
 
-**Comprehensive code analysis with prioritized feedback through workflow-driven investigation**
-
-The `codereview` tool provides professional code review capabilities with actionable feedback, severity-based issue prioritization, and support for various review types from quick style checks to comprehensive security audits. This workflow tool guides Claude through systematic investigation steps with forced pauses between each step to ensure thorough code examination, issue identification, and quality assessment before providing expert analysis.
+Systematic code review with severity-based issue prioritization.
 
 ## Thinking Mode
 
-**Default is `medium` (8,192 tokens).** Use `high` for security-critical code (worth the extra tokens) or `low` for quick style checks (saves ~6k tokens).
+Default: `medium` (8,192 tokens). Use `high` for security-critical code or `low` for quick checks.
 
-## How the Workflow Works
+## Workflow
 
-The codereview tool implements a **structured workflow** that ensures thorough code examination:
-
-**Investigation Phase (Claude-Led):**
-1. **Step 1**: Claude describes the review plan and begins systematic analysis of code structure
-2. **Step 2+**: Claude examines code quality, security implications, performance concerns, and architectural patterns
-3. **Throughout**: Claude tracks findings, relevant files, issues, and confidence levels
-4. **Completion**: Once review is comprehensive, Claude signals completion
+**Investigation Phase:**
+1. Claude plans review and analyzes code structure
+2. Examines quality, security, performance, architecture
+3. Tracks findings and confidence levels
+4. Signals completion when comprehensive
 
 **Expert Analysis Phase:**
-After Claude completes the investigation (unless confidence is **certain**):
-- Complete review summary with all findings and evidence
-- Relevant files and code patterns identified
-- Issues categorized by severity levels
-- Final recommendations based on investigation
+Provides severity-categorized issues with recommendations (skipped if confidence is `certain`).
 
-**Special Note**: If you want Claude to perform the entire review without calling another model, you can include "don't use any other model" in your prompt, and Claude will complete the full workflow independently.
+**Note:** Include "don't use any other model" to use Claude only.
 
 ## Model Recommendation
 
-This tool particularly benefits from Gemini Pro or Flash models due to their 1M context window, which allows comprehensive analysis of large codebases. Claude's context limitations make it challenging to see the "big picture" in complex projects - this is a concrete example where utilizing a secondary model with larger context provides significant value beyond just experimenting with different AI capabilities.
+Gemini Pro/Flash recommended for large codebases (1M context window).
 
 ## Example Prompts
 
@@ -38,29 +30,17 @@ Perform a codereview with gemini pro and review auth.py for security issues and 
 I need an actionable plan but break it down into smaller quick-wins that we can implement and test rapidly 
 ```
 
-## Pro Tip: Multiple Parallel Reviews
 
-**You can start more than one codereview session with Claude:**
+## Features
 
-```
-Start separate sub-tasks for codereview one with o3 finding critical issues and one with flash finding low priority issues
-and quick-wins and give me the final single combined review highlighting only the critical issues 
-```
-
-The above prompt will simultaneously run two separate `codereview` tools with two separate models and combine the output into a single summary for you to consume.
-
-## Key Features
-
-- **Issues prioritized by severity** (🔴 CRITICAL → 🟢 LOW)
-- **Supports specialized reviews**: security, performance, quick
-- **Coding standards enforcement**: `"Use gemini to review src/ against PEP8 standards"`
-- **Severity filtering**: `"Get gemini to review auth/ - only report critical vulnerabilities"`
-- **Image support**: Review code from screenshots, error dialogs, or visual bug reports: `"Review this error screenshot and the related auth.py file for potential security issues"`
-- **Multi-file analysis**: Comprehensive review of entire directories or codebases
-- **Actionable feedback**: Specific recommendations with line numbers and code examples
-- **Language-specific expertise**: Tailored analysis for Python, JavaScript, Java, C#, Swift, and more
-- **Integration issue detection**: Identifies cross-file dependencies and architectural problems
-- **Security vulnerability scanning**: Focused on common security patterns and anti-patterns
+- Issues prioritized by severity (CRITICAL → LOW)
+- Review types: full, security, performance, quick
+- Standards enforcement (PEP8, ESLint, etc.)
+- Severity filtering
+- Image support for screenshots
+- Multi-file analysis
+- Language-specific expertise
+- Cross-file dependency detection
 
 ## Tool Parameters
 
@@ -166,9 +146,3 @@ Reviews include:
 - **Long-term Improvements**: Structural changes for better maintainability
 - **Security Considerations**: Specific security recommendations when relevant
 
-## When to Use CodeReview vs Other Tools
-
-- **Use `codereview`** for: Finding bugs, security issues, performance problems, code quality assessment
-- **Use `analyze`** for: Understanding code structure without finding issues
-- **Use `debug`** for: Diagnosing specific runtime errors or exceptions
-- **Use `refactor`** for: Identifying structural improvements and modernization opportunities

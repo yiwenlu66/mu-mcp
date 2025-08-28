@@ -1,35 +1,25 @@
-# Refactor Tool - Intelligent Code Refactoring
+# Refactor Tool
 
-**Comprehensive refactoring analysis with top-down decomposition strategy through workflow-driven investigation**
-
-The `refactor` tool provides intelligent code refactoring recommendations with a focus on top-down decomposition and systematic code improvement. This workflow tool enforces systematic investigation of code smells, decomposition opportunities, and modernization possibilities across multiple steps, ensuring thorough analysis before providing expert refactoring recommendations with precise implementation guidance.
+Systematic refactoring analysis focusing on code smells, decomposition, and modernization.
 
 ## Thinking Mode
 
-**Default is `medium` (8,192 tokens).** Use `high` for complex legacy systems (worth the investment for thorough refactoring plans) or `max` for extremely complex codebases requiring deep analysis.
+Default: `medium` (8,192 tokens). Use `high` for legacy systems or `max` for complex codebases.
 
-## How the Workflow Works
+## Workflow
 
-The refactor tool implements a **structured workflow** for systematic refactoring analysis:
-
-**Investigation Phase (Claude-Led):**
-1. **Step 1**: Claude describes the refactoring plan and begins analyzing code structure
-2. **Step 2+**: Claude examines code smells, decomposition opportunities, and modernization possibilities
-3. **Throughout**: Claude tracks findings, relevant files, refactoring opportunities, and confidence levels
-4. **Completion**: Once investigation is thorough, Claude signals completion
+**Investigation Phase:**
+1. Claude analyzes code structure
+2. Examines code smells and decomposition opportunities
+3. Tracks findings and confidence levels
+4. Signals completion when thorough
 
 **Expert Analysis Phase:**
-After Claude completes the investigation (unless confidence is **complete**):
-- Complete refactoring opportunity summary
-- Prioritized recommendations by impact
-- Precise implementation guidance with line numbers
-- Final expert assessment for refactoring strategy
-
-This workflow ensures methodical investigation before expert recommendations, resulting in more targeted and valuable refactoring plans.
+Provides prioritized refactoring recommendations with implementation guidance (skipped if confidence is `complete`).
 
 ## Model Recommendation
 
-The refactor tool excels with models that have large context windows like Gemini Pro (1M tokens), which can analyze entire files and complex codebases simultaneously. This comprehensive view enables detection of cross-file dependencies, architectural patterns, and refactoring opportunities that might be missed when reviewing code in smaller chunks due to context constraints.
+Gemini Pro recommended (1M context) for detecting cross-file dependencies and patterns.
 
 ## Example Prompts
 
@@ -157,15 +147,6 @@ This results in Claude first performing its own expert analysis, encouraging it 
 - Identifies public API impact
 - Suggests backward compatibility approaches
 
-## Best Practices
-
-- **Start with decomposition**: Address structural issues before cosmetic improvements
-- **Provide clear context**: Explain the codebase purpose and constraints
-- **Use appropriate refactor types**: Match the type to your primary concern
-- **Include style examples**: Reference existing well-structured code in your project
-- **Focus on high-impact areas**: Target the most problematic or frequently modified code
-- **Plan implementation order**: Follow the tool's sequencing recommendations
-- **Consider test coverage**: Ensure adequate tests before major structural changes
 
 ## Output Format
 

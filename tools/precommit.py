@@ -33,38 +33,24 @@ logger = logging.getLogger(__name__)
 
 # Tool-specific field descriptions for precommit workflow
 PRECOMMIT_WORKFLOW_FIELD_DESCRIPTIONS = {
-    "step": (
-        "Validation plan. Step 1: State strategy. Later: Report findings. "
-        "MUST examine git changes, analyze impacts. Use 'relevant_files' for code. NO large snippets."
-    ),
-    "step_number": "Current step index in pre-commit sequence (starts at 1). Build upon previous steps.",
-    "total_steps": (
-        "Estimated steps needed to complete validation. "
-        "IMPORTANT: For external validation, use max 3 steps. For internal validation, use 1 step. "
-        "When continuation_id is provided (continuing a previous conversation), set to 3 max for external, 1 for internal."
-    ),
-    "next_step_required": (
-        "True to continue with another step, False when validation is complete. "
-        "CRITICAL: If total_steps>=3, set to True until the final step. "
-        "When continuation_id is provided: Follow the same validation rules based on precommit_type."
-    ),
-    "findings": (
-        "Discoveries: git diffs, modifications, issues (bugs, missing tests, security). "
-        "Document positive+concerns. Update in later steps."
-    ),
-    "files_checked": "All examined files (absolute paths), including ruled-out ones.",
-    "relevant_files": "Files with changes or relevant to validation (absolute paths). Modified files, config, tests, docs.",
-    "relevant_context": "Methods/functions central to changes: 'Class.method' or 'function'. Focus on modified/added.",
-    "issues_found": "Issues with 'severity' (critical/high/medium/low) and 'description'. Bugs, security, performance.",
-    "precommit_type": "'external' (default, expert review) or 'internal' (local only). Default external unless user specifies.",
-    "backtrack_from_step": "Step number to backtrack from if revision needed.",
-    "images": "Optional screenshots/visuals for validation (absolute paths).",
-    "path": "Starting path for git repos (FULL absolute path). REQUIRED step 1.",
-    "compare_to": "Optional git ref (branch/tag/commit) to compare. Checks remotes if needed. Without: checks staged/unstaged.",
-    "include_staged": "Analyze staged changes. Ignored if 'compare_to' provided.",
-    "include_unstaged": "Analyze unstaged changes. Ignored if 'compare_to' provided.",
-    "focus_on": "Focus aspects: security, performance, test coverage.",
-    "severity_filter": "Minimum severity to report.",
+    "step": "Validation plan and findings. No large snippets",
+    "step_number": "Current step (starts at 1)",
+    "total_steps": "Steps needed (external: max 3, internal: 1)",
+    "next_step_required": "Continue? Follow precommit_type rules",
+    "findings": "Git diffs, changes, issues found",
+    "files_checked": "All examined files (absolute paths)",
+    "relevant_files": "Changed/relevant files (absolute paths)",
+    "relevant_context": "Modified methods/functions (Class.method format)",
+    "issues_found": "Issues with severity and description",
+    "precommit_type": "external (with expert) or internal",
+    "backtrack_from_step": "Step to backtrack from if needed",
+    "images": "Screenshots/visuals (absolute paths)",
+    "path": "Git repo path (absolute path, required step 1)",
+    "compare_to": "Git ref to compare (branch/tag/commit)",
+    "include_staged": "Analyze staged changes",
+    "include_unstaged": "Analyze unstaged changes",
+    "focus_on": "Focus areas (security, performance, etc)",
+    "severity_filter": "Minimum severity to report",
 }
 
 

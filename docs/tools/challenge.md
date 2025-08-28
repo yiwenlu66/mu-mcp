@@ -1,7 +1,6 @@
-# challenge - Challenge an approach or validate ideas with confidence
+# Challenge Tool
 
-The `challenge` tool encourages thoughtful critical thinking instead of automatic agreement with the dreaded **You're absolutely right!** responses - especially 
-when you're not. This tool wraps your comment with instructions that prompt critical thinking and honest analysis instead of blind agreement.
+Prevents reflexive agreement. Forces critical analysis when users challenge approaches.
 
 ## Quick Example
 
@@ -26,10 +25,3 @@ to ensure thoughtful analysis instead of reflexive agreement.
 **With Zen:**
 ![with_zen@2x](https://github.com/user-attachments/assets/9d72f444-ba53-4ab1-83e5-250062c6ee70)
 
-## Why Use Challenge?
-
-AI assistants sometimes tend to agree too readily. The challenge tool helps you:
-- Get genuine critical evaluation of your ideas
-- Challenge assumptions constructively
-- Receive honest feedback on proposals
-- Validate approaches with thoughtful analysis

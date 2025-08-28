@@ -19,11 +19,9 @@ class ToolModelCategory(Enum):
 class ContinuationOffer(BaseModel):
     """Offer for CLI agent to continue conversation when Gemini doesn't ask follow-up"""
 
-    continuation_id: str = Field(
-        ..., description="Thread continuation ID for multi-turn conversations across different tools"
-    )
-    note: str = Field(..., description="Message explaining continuation opportunity to CLI agent")
-    remaining_turns: int = Field(..., description="Number of conversation turns remaining")
+    continuation_id: str = Field(..., description="Thread ID for continuation")
+    note: str = Field(..., description="Continuation opportunity message")
+    remaining_turns: int = Field(..., description="Turns remaining")
 
 
 class ToolOutput(BaseModel):
@@ -44,64 +42,55 @@ class ToolOutput(BaseModel):
         "continuation_available",
         "no_bug_found",
     ] = "success"
-    content: Optional[str] = Field(None, description="The main content/response from the tool")
+    content: Optional[str] = Field(None, description="Main response")
     content_type: Literal["text", "markdown", "json"] = "text"
     metadata: Optional[dict[str, Any]] = Field(default_factory=dict)
-    continuation_offer: Optional[ContinuationOffer] = Field(
-        None, description="Optional offer for Agent to continue conversation"
-    )
+    continuation_offer: Optional[ContinuationOffer] = Field(None, description="Continuation offer")
 
 
 class FilesNeededRequest(BaseModel):
     """Request for missing files / code to continue"""
 
     status: Literal["files_required_to_continue"] = "files_required_to_continue"
-    mandatory_instructions: str = Field(..., description="Critical instructions for Agent regarding required context")
-    files_needed: Optional[list[str]] = Field(
-        default_factory=list, description="Specific files that are needed for analysis"
-    )
-    suggested_next_action: Optional[dict[str, Any]] = Field(
-        None,
-        description="Suggested tool call with parameters after getting clarification",
-    )
+    mandatory_instructions: str = Field(..., description="Critical instructions")
+    files_needed: Optional[list[str]] = Field(default_factory=list, description="Files needed")
+    suggested_next_action: Optional[dict[str, Any]] = Field(None, description="Next action")
 
 
 class FullCodereviewRequired(BaseModel):
     """Request for full code review when scope is too large for quick review"""
 
     status: Literal["full_codereview_required"] = "full_codereview_required"
-    important: Optional[str] = Field(None, description="Important message about escalation")
-    reason: Optional[str] = Field(None, description="Reason why full review is needed")
+    important: Optional[str] = Field(None, description="Escalation message")
+    reason: Optional[str] = Field(None, description="Reason")
 
 
 class FocusedReviewRequired(BaseModel):
     """Request for Agent to provide smaller, focused subsets of code for review"""
 
     status: Literal["focused_review_required"] = "focused_review_required"
-    reason: str = Field(..., description="Why the current scope is too large for effective review")
-    suggestion: str = Field(
-        ..., description="Suggested approach for breaking down the review into smaller, focused parts"
-    )
+    reason: str = Field(..., description="Why scope too large")
+    suggestion: str = Field(..., description="Breakdown approach")
 
 
 class TestSampleNeeded(BaseModel):
     """Request for additional test samples to determine testing framework"""
 
     status: Literal["test_sample_needed"] = "test_sample_needed"
-    reason: str = Field(..., description="Reason why additional test samples are required")
+    reason: str = Field(..., description="Why samples needed")
 
 
 class MoreTestsRequired(BaseModel):
     """Request for continuation to generate additional tests"""
 
     status: Literal["more_tests_required"] = "more_tests_required"
-    pending_tests: str = Field(..., description="List of pending tests to be generated")
+    pending_tests: str = Field(..., description="Pending tests")
 
 
 class RefactorOpportunity(BaseModel):
     """A single refactoring opportunity with precise targeting information"""
 
-    id: str = Field(..., description="Unique identifier for this refactoring opportunity")
+    id: str = Field(..., description="Unique identifier")
     type: Literal["decompose", "codesmells", "modernize", "organization"] = Field(
         ..., description="Type of refactoring"
     )
@@ -109,13 +98,13 @@ class RefactorOpportunity(BaseModel):
     file: str = Field(..., description="Absolute path to the file")
     start_line: int = Field(..., description="Starting line number")
     end_line: int = Field(..., description="Ending line number")
-    context_start_text: str = Field(..., description="Exact text from start line for verification")
-    context_end_text: str = Field(..., description="Exact text from end line for verification")
-    issue: str = Field(..., description="Clear description of what needs refactoring")
-    suggestion: str = Field(..., description="Specific refactoring action to take")
+    context_start_text: str = Field(..., description="Exact text from start line")
+    context_end_text: str = Field(..., description="Exact text from end line")
+    issue: str = Field(..., description="What needs refactoring")
+    suggestion: str = Field(..., description="Refactoring action")
     rationale: str = Field(..., description="Why this improves the code")
-    code_to_replace: str = Field(..., description="Original code that should be changed")
-    replacement_code_snippet: str = Field(..., description="Refactored version of the code")
+    code_to_replace: str = Field(..., description="Original code")
+    replacement_code_snippet: str = Field(..., description="Refactored code")
     new_code_snippets: Optional[list[dict]] = Field(
         default_factory=list, description="Additional code snippets to be added"
     )
@@ -125,11 +114,11 @@ class RefactorAction(BaseModel):
     """Next action for Agent to implement refactoring"""
 
     action_type: Literal["EXTRACT_METHOD", "SPLIT_CLASS", "MODERNIZE_SYNTAX", "REORGANIZE_CODE", "DECOMPOSE_FILE"] = (
-        Field(..., description="Type of action to perform")
+        Field(..., description="Action type")
     )
     target_file: str = Field(..., description="Absolute path to target file")
     source_lines: str = Field(..., description="Line range (e.g., '45-67')")
-    description: str = Field(..., description="Step-by-step action description for CLI Agent")
+    description: str = Field(..., description="Step-by-step action")
 
 
 class RefactorAnalysisComplete(BaseModel):
@@ -145,7 +134,7 @@ class CodeTooLargeRequest(BaseModel):
     """Request to reduce file selection due to size constraints"""
 
     status: Literal["code_too_large"] = "code_too_large"
-    content: str = Field(..., description="Message explaining the size constraint")
+    content: str = Field(..., description="Size constraint message")
     content_type: Literal["text"] = "text"
     metadata: dict[str, Any] = Field(default_factory=dict)
 
@@ -154,7 +143,7 @@ class ResendPromptRequest(BaseModel):
     """Request to resend prompt via file due to size limits"""
 
     status: Literal["resend_prompt"] = "resend_prompt"
-    content: str = Field(..., description="Instructions for handling large prompt")
+    content: str = Field(..., description="Large prompt instructions")
     content_type: Literal["text"] = "text"
     metadata: dict[str, Any] = Field(default_factory=dict)
 

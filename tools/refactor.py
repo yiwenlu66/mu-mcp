@@ -34,61 +34,21 @@ logger = logging.getLogger(__name__)
 
 # Tool-specific field descriptions for refactor tool
 REFACTOR_FIELD_DESCRIPTIONS = {
-    "step": (
-        "The refactoring plan. Step 1: State strategy. Later steps: Report findings. "
-        "CRITICAL: Examine code for smells, and opportunities for decomposition, modernization, and organization. "
-        "Use 'relevant_files' for code. FORBIDDEN: Large code snippets."
-    ),
-    "step_number": (
-        "The index of the current step in the refactoring investigation sequence, beginning at 1. Each step should "
-        "build upon or revise the previous one."
-    ),
-    "total_steps": (
-        "Your current estimate for how many steps will be needed to complete the refactoring investigation. "
-        "Adjust as new opportunities emerge."
-    ),
-    "next_step_required": (
-        "Set to true if you plan to continue the investigation with another step. False means you believe the "
-        "refactoring analysis is complete and ready for expert validation."
-    ),
-    "findings": (
-        "Summary of discoveries from this step, including code smells and opportunities for decomposition, modernization, or organization. "
-        "Document both strengths and weaknesses. In later steps, confirm or update past findings."
-    ),
-    "files_checked": (
-        "List all files examined (absolute paths). Include even ruled-out files to track exploration path."
-    ),
-    "relevant_files": (
-        "Subset of files_checked with code requiring refactoring (absolute paths). Include files with "
-        "code smells, decomposition needs, or improvement opportunities."
-    ),
-    "relevant_context": (
-        "List methods/functions central to refactoring opportunities, in 'ClassName.methodName' or 'functionName' format. "
-        "Prioritize those with code smells or needing improvement."
-    ),
-    "issues_found": (
-        "Refactoring opportunities as dictionaries with 'severity' (critical/high/medium/low), "
-        "'type' (codesmells/decompose/modernize/organization), and 'description'. "
-        "Include all improvement opportunities found."
-    ),
-    "confidence": (
-        "Your confidence in refactoring analysis: exploring (starting), incomplete (significant work remaining), "
-        "partial (some opportunities found, more analysis needed), complete (comprehensive analysis finished, "
-        "all major opportunities identified). "
-        "WARNING: Use 'complete' ONLY when fully analyzed and can provide recommendations without expert help. "
-        "'complete' PREVENTS expert validation. Use 'partial' for large files or uncertain analysis."
-    ),
-    "backtrack_from_step": ("If an earlier finding needs revision, specify the step number to backtrack from."),
-    "images": (
-        "Optional list of absolute paths to architecture diagrams, UI mockups, design documents, or visual references "
-        "that help with refactoring context. Only include if they materially assist understanding or assessment."
-    ),
-    "refactor_type": "Type of refactoring analysis to perform (codesmells, decompose, modernize, organization)",
-    "focus_areas": "Specific areas to focus on (e.g., 'performance', 'readability', 'maintainability', 'security')",
-    "style_guide_examples": (
-        "Optional existing code files to use as style/pattern reference (must be FULL absolute paths to real files / "
-        "folders - DO NOT SHORTEN). These files represent the target coding style and patterns for the project."
-    ),
+    "step": "Refactoring plan and findings. No large code snippets",
+    "step_number": "Current step index (starts at 1)",
+    "total_steps": "Estimated steps needed (adjust as needed)",
+    "next_step_required": "Continue? False = ready for validation",
+    "findings": "Code smells and opportunities found",
+    "files_checked": "All examined files (absolute paths)",
+    "relevant_files": "Files needing refactoring (absolute paths)",
+    "relevant_context": "Methods/functions to refactor (ClassName.methodName format)",
+    "issues_found": "Opportunities with severity, type, description",
+    "confidence": "exploring/incomplete/partial/complete ('complete' skips validation)",
+    "backtrack_from_step": "Step number to backtrack from if revision needed",
+    "images": "Architecture diagrams, mockups (absolute paths)",
+    "refactor_type": "codesmells/decompose/modernize/organization",
+    "focus_areas": "Areas to focus on (performance, readability, etc.)",
+    "style_guide_examples": "Reference code files for style (absolute paths)",
 }
 
 

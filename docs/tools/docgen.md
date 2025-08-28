@@ -1,32 +1,23 @@
-# DocGen Tool - Comprehensive Documentation Generation
+# DocGen Tool
 
-**Generates comprehensive documentation with complexity analysis through workflow-driven investigation**
+Generates documentation with complexity analysis and gotcha warnings.
 
-The `docgen` tool creates thorough documentation by analyzing your code structure, understanding function complexity, and documenting gotchas and unexpected behaviors that developers need to know. This workflow tool guides Claude through systematic investigation of code functionality, architectural patterns, and documentation needs across multiple steps before generating comprehensive documentation with complexity analysis and call flow information.
+## Workflow
 
-## How the Workflow Works
+**Investigation Phase:**
+1. Discovers all files needing documentation
+2. Documents files one-by-one
+3. Tracks progress with counters
+4. Completes when all files documented
 
-The docgen tool implements a **structured workflow** for comprehensive documentation generation:
-
-**Investigation Phase (Claude-Led):**
-1. **Step 1 (Discovery)**: Claude discovers ALL files needing documentation and reports exact count
-2. **Step 2+ (Documentation)**: Claude documents files one-by-one with complete coverage validation
-3. **Throughout**: Claude tracks progress with counters and enforces modern documentation styles
-4. **Completion**: Only when all files are documented (num_files_documented = total_files_to_document)
-
-**Documentation Generation Phase:**
-After Claude completes the investigation:
-- Complete documentation strategy with style consistency
-- Function/method documentation with complexity analysis
-- Call flow and dependency documentation
-- Gotchas and unexpected behavior documentation
-- Final polished documentation following project standards
-
-This workflow ensures methodical analysis before documentation generation, resulting in more comprehensive and valuable documentation.
+**Documentation Includes:**
+- Function complexity analysis
+- Call flow and dependencies
+- Gotchas and edge cases
 
 ## Model Recommendation
 
-Documentation generation excels with analytical models like Gemini Pro or O3, which can understand complex code relationships, identify non-obvious behaviors, and generate thorough documentation that covers gotchas and edge cases. The combination of large context windows and analytical reasoning enables generation of documentation that helps prevent integration issues and developer confusion.
+Gemini Pro or O3 recommended for understanding complex relationships and edge cases.
 
 ## Example Prompts
 
@@ -187,18 +178,4 @@ Documentation generation excels with analytical models like Gemini Pro or O3, wh
 - Cross-references and links
 - Version and compatibility notes
 
-## Best Practices
 
-- **Use systematic approach**: Tool now documents all files with progress tracking and validation
-- **Trust the counters**: Tool prevents premature completion until all files are documented
-- **Large files handled**: Tool automatically processes large files in systematic portions
-- **Modern styles enforced**: Tool ensures correct documentation style per language
-- **Configuration matters**: Enable complexity analysis and call flow for comprehensive docs
-- **Bug tracking**: Tool surfaces issues without altering code - review findings after completion
-
-## When to Use DocGen vs Other Tools
-
-- **Use `docgen`** for: Creating comprehensive documentation, adding missing docs, improving existing documentation
-- **Use `analyze`** for: Understanding code structure without generating documentation
-- **Use `codereview`** for: Reviewing code quality including documentation completeness
-- **Use `refactor`** for: Restructuring code before documentation (cleaner code = better docs)

@@ -1,30 +1,20 @@
-# Tracer Tool - Static Code Analysis Prompt Generator
+# Tracer Tool
 
-**Creates detailed analysis prompts for call-flow mapping and dependency tracing**
+Maps execution flows and dependencies. Two modes: precision (methods) and dependencies (classes/modules).
 
-The `tracer` tool is a specialized prompt-generation tool that creates structured analysis requests for Claude to perform comprehensive static code analysis. Rather than passing entire projects to another model, this tool generates focused prompts that Claude can use to efficiently trace execution flows and map dependencies within the codebase.
+## Analysis Modes
 
-## Two Analysis Modes
+**precision**: Traces method execution, call chains, side effects
 
-**`precision` Mode**: For methods/functions
-- Traces execution flow, call chains, and usage patterns
-- Detailed branching analysis and side effects
-- Shows when and how functions are called throughout the system
+**dependencies**: Maps structural relationships and coupling
 
-**`dependencies` Mode**: For classes/modules/protocols  
-- Maps bidirectional dependencies and structural relationships
-- Identifies coupling and architectural dependencies
-- Shows how components interact and depend on each other
+## Features
 
-## Key Features
-
-- **Generates comprehensive analysis prompts** instead of performing analysis directly
-- **Faster and more efficient** than full project analysis by external models
-- **Creates structured instructions** for call-flow graph generation
-- **Provides detailed formatting requirements** for consistent output
-- **Supports any programming language** with automatic convention detection
-- **Output can be used as input** into another tool, such as `chat` along with related code files to perform logical call-flow analysis
-- **Image support**: Analyze visual call flow diagrams, sequence diagrams: `"Generate tracer analysis for this payment flow using the sequence diagram"`
+- Generates structured analysis prompts
+- Faster than full project analysis
+- Language-agnostic
+- Image support for diagrams
+- Output chainable to other tools
 
 ## Tool Parameters
 
@@ -136,13 +126,6 @@ Format the analysis as:
 - Refactoring impact evaluation
 ```
 
-## Best Practices
-
-- **Be specific about goals**: Clearly state what you need to understand and why
-- **Describe context**: Mention if you're debugging, refactoring, or learning the codebase
-- **Choose appropriate mode**: Use `precision` for method flows, `dependencies` for architecture
-- **Include visual context**: Reference diagrams or documentation when available
-- **Follow up with analysis**: Use the generated prompt with `chat` or `analyze` tools
 
 ## Integration with Other Tools
 

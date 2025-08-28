@@ -1,25 +1,21 @@
-# Consensus Tool - Multi-Model Perspective Gathering
+# Consensus Tool
 
-**Get diverse expert opinions from multiple AI models on technical proposals and decisions**
-
-The `consensus` tool orchestrates multiple AI models to provide diverse perspectives on your proposals, enabling structured decision-making through for/against analysis and multi-model expert opinions.
+Multi-model perspectives with for/against stances for decision-making.
 
 ## Thinking Mode
 
-**Default is `medium` (8,192 tokens).** Use `high` for complex architectural decisions or `max` for critical strategic choices requiring comprehensive analysis.
+Default: `medium` (8,192 tokens). Use `high` for architecture or `max` for critical decisions.
 
 ## Model Recommendation
 
-Consensus tool uses extended reasoning models by default, making it ideal for complex decision-making scenarios that benefit from multiple perspectives and deep analysis.
+Uses extended reasoning models for multi-perspective analysis.
 
-## How It Works
+## Workflow
 
-The consensus tool orchestrates multiple AI models to provide diverse perspectives on your proposals:
-
-1. **Assign stances**: Each model can take a specific viewpoint (supportive, critical, or neutral)
-2. **Gather opinions**: Models analyze your proposal from their assigned perspective with built-in common-sense guardrails
-3. **Synthesize results**: Claude combines all perspectives into a balanced recommendation
-4. **Natural language**: Use simple descriptions like "supportive", "critical", or "against" - the tool handles synonyms automatically
+1. Assign stances (for/against/neutral)
+2. Gather model opinions
+3. Synthesize balanced recommendation
+4. Natural language stances supported
 
 ## Example Prompts
 
@@ -120,14 +116,6 @@ Get a consensus from gemini supporting the idea for implementing X, grok opposin
 "Use consensus to evaluate this new UI design mockup - have flash support it and pro be critical"
 ```
 
-## Best Practices
-
-- **Provide detailed context**: Include project constraints, requirements, and background
-- **Use balanced stances**: Mix supportive and critical perspectives for thorough analysis
-- **Specify focus areas**: Guide models to emphasize relevant aspects (security, performance, etc.)
-- **Include relevant files**: Provide code, documentation, or specifications for context
-- **Build on discussions**: Use continuation for follow-up analysis and refinement
-- **Leverage visual context**: Include diagrams, mockups, or design documents when relevant
 
 ## Ethical Guardrails
 

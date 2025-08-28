@@ -1,12 +1,10 @@
-# Chat Tool - General Development Chat & Collaborative Thinking
+# Chat Tool
 
-**Your thinking partner - bounce ideas, get second opinions, brainstorm collaboratively**
-
-The `chat` tool is your collaborative thinking partner for development conversations. It's designed to help you brainstorm, validate ideas, get second opinions, and explore alternatives in a conversational format.
+Collaborative thinking for brainstorming, second opinions, and exploring ideas.
 
 ## Thinking Mode
 
-**Default is `medium` (8,192 tokens).** Use `low` for quick questions to save tokens, or `high` for complex discussions when thoroughness matters.
+Default: `medium` (8,192 tokens). Use `low` for quick questions or `high` for complex discussions.
 
 ## Example Prompt
 
@@ -16,19 +14,14 @@ and I need an expert opinion for the project I'm working on. Get a good idea of 
 and then debate with the other models to give me a final verdict
 ```
 
-## Key Features
+## Features
 
-- **Collaborative thinking partner** for your analysis and planning
-- **Get second opinions** on your designs and approaches
-- **Brainstorm solutions** and explore alternatives together
-- **Validate your checklists** and implementation plans
-- **General development questions** and explanations
-- **Technology comparisons** and best practices
-- **Architecture and design discussions**
-- **File reference support**: `"Use gemini to explain this algorithm with context from algorithm.py"`
-- **Image support**: Include screenshots, diagrams, UI mockups for visual analysis: `"Chat with gemini about this error dialog screenshot to understand the user experience issue"`
-- **Dynamic collaboration**: Gemini can request additional files or context during the conversation if needed for a more thorough response
-- **Web search capability**: Analyzes when web searches would be helpful and recommends specific searches for Claude to perform, ensuring access to current documentation and best practices
+- Second opinions and brainstorming
+- Technology comparisons
+- Architecture discussions
+- File context support
+- Image analysis (screenshots, diagrams)
+- Web search for current documentation
 
 ## Tool Parameters
 
@@ -68,17 +61,3 @@ and then debate with the other models to give me a final verdict
 "Chat with gemini about this UI mockup screenshot - is the user flow intuitive?"
 ```
 
-## Best Practices
-
-- **Be specific about context**: Include relevant files or describe your project scope
-- **Ask for trade-offs**: Request pros/cons for better decision-making
-- **Use conversation continuation**: Build on previous discussions with `continuation_id`
-- **Leverage visual context**: Include diagrams, mockups, or screenshots when discussing UI/UX
-- **Request web searches**: Ask for current best practices or recent developments in technologies
-
-## When to Use Chat vs Other Tools
-
-- **Use `chat`** for: Open-ended discussions, brainstorming, getting second opinions, technology comparisons
-- **Use `thinkdeep`** for: Extending specific analysis, challenging assumptions, deeper reasoning
-- **Use `analyze`** for: Understanding existing code structure and patterns
-- **Use `debug`** for: Specific error diagnosis and troubleshooting

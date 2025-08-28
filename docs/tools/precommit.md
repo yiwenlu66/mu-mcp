@@ -1,42 +1,30 @@
-# PreCommit Tool - Pre-Commit Validation
+# PreCommit Tool
 
-**Comprehensive review of staged/unstaged git changes across multiple repositories through workflow-driven investigation**
-
-The `precommit` tool provides thorough validation of git changes before committing, ensuring code quality, requirement compliance, and preventing regressions across multiple repositories. This workflow tool guides Claude through systematic investigation of git changes, repository status, and file modifications across multiple steps before providing expert validation.
+Validates git changes before committing. Reviews staged/unstaged changes for quality and regressions.
 
 ## Thinking Mode
 
-**Default is `medium` (8,192 tokens).** Use `high` or `max` for critical releases when thorough validation justifies the token cost.
+Default: `medium` (8,192 tokens). Use `high` or `max` for critical releases.
 
-## How the Workflow Works
+## Workflow
 
-The precommit tool implements a **structured workflow** for comprehensive change validation:
-
-**Investigation Phase (Claude-Led):**
-1. **Step 1**: Claude states validation strategy using direct statements ("I will examine..." not "Let me examine...")
-2. **Step 2**: Claude examines changes, diffs, dependencies with MANDATORY deeper investigation
-3. **Step 3+**: Claude performs final verification (minimum 3 steps enforced)
-4. **Throughout**: Claude tracks findings, relevant files, and issues with CRITICAL step validation
-5. **Completion**: Only after minimum steps, Claude signals completion and creates changeset file
-
-**For Continuations**: When using `continuation_id` with external validation, Claude will immediately gather git changes and proceed to expert analysis without minimum step requirements.
+**Investigation Phase (Minimum 3 steps):**
+1. Claude states validation strategy
+2. Examines changes, diffs, dependencies
+3. Performs final verification
+4. Creates changeset file for external validation
 
 **Expert Validation Phase:**
-After Claude completes the investigation (unless precommit_type is **internal**):
-- Complete summary of all changes and their context
-- Potential issues and regressions identified
-- Requirement compliance assessment
-- Final recommendations for safe commit
+Provides issue assessment and commit recommendations (skipped if precommit_type is `internal`).
 
-**Special Notes**: 
-- Default validation type is **external** (uses expert model for additional review)
-- To skip expert validation, explicitly request "don't use any other model" or set precommit_type to "internal"
-- **CRITICAL**: Minimum 3 steps are enforced - tool will prevent setting `next_step_required=false` before final step
-- **MANDATORY**: Changeset file (zen_precommit.changeset) must be created for external validation
+**Notes:**
+- Default: external validation (uses expert model)
+- Minimum 3 steps enforced
+- Creates zen_precommit.changeset for external validation
 
 ## Model Recommendation
 
-Pre-commit validation benefits significantly from models with extended context windows like Gemini Pro, which can analyze extensive changesets across multiple files and repositories simultaneously. This comprehensive view enables detection of cross-file dependencies, architectural inconsistencies, and integration issues that might be missed when reviewing changes in isolation due to context constraints.
+Gemini Pro recommended for analyzing extensive changesets and cross-file dependencies.
 
 ## Visual Example
 
@@ -226,14 +214,6 @@ The tool automatically discovers and validates:
 - Dependencies correctly updated
 - Environment-specific changes validated
 
-## Best Practices
-
-- **Provide clear context**: Include the original requirements or feature description
-- **Use for significant changes**: Most valuable for features, refactoring, or security updates
-- **Review before final commit**: Catch issues before they enter the main branch
-- **Include visual context**: Screenshots of requirements or expected behavior
-- **Focus validation scope**: Use `focus_on` parameter for specific concerns
-- **Multi-stage validation**: Use continuation for iterative improvement
 
 ## Output Format
 

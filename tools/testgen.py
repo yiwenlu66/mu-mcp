@@ -34,51 +34,17 @@ logger = logging.getLogger(__name__)
 
 # Tool-specific field descriptions for test generation workflow
 TESTGEN_WORKFLOW_FIELD_DESCRIPTIONS = {
-    "step": (
-        "The test plan for this step. Step 1: State strategy for analyzing code structure, business logic, critical paths, and edge cases. "
-        "Later steps: Report findings and adapt as new test scenarios are identified."
-    ),
-    "step_number": (
-        "The index of the current step in the test generation sequence, beginning at 1. Each step should build upon or "
-        "revise the previous one."
-    ),
-    "total_steps": (
-        "Your current estimate for how many steps will be needed to complete the test generation analysis. "
-        "Adjust as new findings emerge."
-    ),
-    "next_step_required": (
-        "Set to true if you plan to continue the investigation with another step. False means you believe the "
-        "test generation analysis is complete and ready for expert validation."
-    ),
-    "findings": (
-        "Summary of discoveries about the code being tested. Include analysis of functionality, critical paths, edge cases, "
-        "boundary conditions, and error handling. IMPORTANT: Document both happy paths and failure modes. "
-        "Identify existing test patterns. In later steps, confirm or update past findings."
-    ),
-    "files_checked": (
-        "List all files examined (absolute paths). Include even ruled-out files to track exploration path."
-    ),
-    "relevant_files": (
-        "Subset of files_checked containing code needing tests (absolute paths). Include implementation files, "
-        "interfaces, dependencies, or existing test examples."
-    ),
-    "relevant_context": (
-        "List methods/functions needing test coverage, in 'ClassName.methodName' or 'functionName' format. "
-        "Prioritize critical business logic, public APIs, and error-prone code paths."
-    ),
-    "confidence": (
-        "Indicate your current confidence in the test generation assessment. Use: 'exploring' (starting analysis), "
-        "'low' (early investigation), 'medium' (some patterns identified), 'high' (strong understanding), "
-        "'very_high' (very strong understanding), 'almost_certain' (nearly complete test plan), 'certain' "
-        "(100% confidence - test plan is thoroughly complete and all test scenarios are identified with no need for external model validation). "
-        "Do NOT use 'certain' unless the test generation analysis is comprehensively complete, use 'very_high' or 'almost_certain' instead if not 100% sure. "
-        "Using 'certain' means you have complete confidence locally and prevents external model validation."
-    ),
-    "backtrack_from_step": ("If an earlier finding needs revision, specify the step number to backtrack from."),
-    "images": (
-        "Optional list of absolute paths to architecture diagrams, flow charts, or visual documentation that help "
-        "understand the code structure and test requirements. Only include if they materially assist test planning."
-    ),
+    "step": "Test strategy and findings",
+    "step_number": "Current step (starts at 1)",
+    "total_steps": "Estimated steps needed",
+    "next_step_required": "Continue? False = ready for validation",
+    "findings": "Code analysis, edge cases, test scenarios found",
+    "files_checked": "All examined files (absolute paths)",
+    "relevant_files": "Files needing tests (absolute paths)",
+    "relevant_context": "Methods/functions to test (Class.method format)",
+    "confidence": "exploring/low/medium/high/very_high/almost_certain/certain",
+    "backtrack_from_step": "Step to backtrack from if needed",
+    "images": "Diagrams, flow charts (absolute paths)",
 }
 
 

@@ -1,38 +1,27 @@
-# Secaudit Tool - Comprehensive Security Audit
+# Secaudit Tool
 
-**Systematic OWASP-based security assessment with compliance evaluation through workflow-driven investigation**
+OWASP-based security assessment with compliance evaluation. 
 
-The `secaudit` tool provides comprehensive security auditing capabilities with systematic OWASP Top 10 assessment, compliance framework evaluation, 
-and threat modeling. This workflow tool guides Claude through methodical security investigation steps with forced pauses between each step to ensure 
-thorough vulnerability assessment, security pattern analysis, and compliance verification before providing expert analysis.
+**Warning**: AI cannot identify all vulnerabilities. Always perform manual security reviews.
 
-**Important**: AI models may not identify all security vulnerabilities. Always perform additional manual security reviews, 
-penetration testing, and verification.
+## Workflow (6-Step Security Assessment)
 
-## How the Workflow Works
-
-The secaudit tool implements a **structured 6-step security workflow** that ensures comprehensive security assessment:
-
-**Investigation Phase (Claude-Led):**
-1. **Step 1**: Security Scope Analysis - Claude identifies application type, tech stack, attack surface, and compliance requirements
-2. **Step 2**: Authentication & Authorization Assessment - Analyzes auth mechanisms, session management, and access controls
-3. **Step 3**: Input Validation & Data Security - Reviews input handling, data protection, and injection vulnerabilities
-4. **Step 4**: OWASP Top 10 (2021) Review - Systematic assessment of all OWASP categories with specific findings
-5. **Step 5**: Dependencies & Infrastructure - Security analysis of third-party components and deployment configurations
-6. **Step 6**: Compliance & Risk Assessment - Evaluation against specified compliance frameworks and risk prioritization
+**Investigation Phase:**
+1. Security scope and attack surface
+2. Authentication & authorization
+3. Input validation & data security
+4. OWASP Top 10 (2021) review
+5. Dependencies & infrastructure
+6. Compliance & risk assessment
 
 **Expert Analysis Phase:**
-After Claude completes the investigation (unless confidence is **certain**):
-- Complete security assessment summary with all vulnerabilities and evidence
-- OWASP Top 10 systematic findings with severity classifications
-- Compliance framework gap analysis and remediation recommendations
-- Risk-prioritized remediation roadmap based on threat level and business impact
+Provides vulnerability summary, OWASP findings, compliance gaps, and remediation roadmap.
 
-**Special Note**: If you want Claude to perform the entire security audit without calling another model, you can include "don't use any other model" in your prompt, and Claude will complete the full workflow independently.
+**Note:** Include "don't use any other model" to use Claude only.
 
 ## Model Recommendation
 
-This tool particularly benefits from Gemini Pro or O3 models due to their advanced reasoning capabilities and large context windows, which allow comprehensive security analysis across complex codebases. Security audits require understanding subtle attack vectors and cross-component interactions that benefit from deeper analytical capabilities.
+Gemini Pro or O3 recommended for detecting subtle attack vectors and cross-component vulnerabilities.
 
 ## Example Prompts
 
@@ -45,15 +34,6 @@ Use secaudit to conduct a comprehensive security audit of the authentication sys
 security patterns and HIPAA compliance
 ```
 
-## Pro Tip: Multi-Scope Security Assessment
-
-**You can run parallel security audits for different application components:**
-
-```
-Start separate sub-tasks, in one start a secaudit for critical payment processing components focusing on PCI DSS with gemini pro, 
-and in the other for user management focusing on OWASP authentication vulnerabilities with o4-mini, then combine into a unified 
-security remediation plan using planner 
-```
 
 ## Key Features
 
@@ -193,15 +173,6 @@ threat level high, include container security and network policies"
 severity filter critical and high only"
 ```
 
-## Best Practices
-
-- **Define clear security scope**: Specify application type, tech stack, and security boundaries
-- **Set appropriate threat levels**: Match assessment depth to risk exposure and criticality
-- **Include compliance requirements**: Specify relevant frameworks for regulatory alignment
-- **Use parallel audits**: Run separate assessments for different components or compliance frameworks
-- **Provide architectural context**: Include system diagrams, data flow documentation, or deployment topology
-- **Focus audit scope**: Use audit_focus for targeted assessments of specific security domains
-- **Follow up on findings**: Use continuation feature to dive deeper into specific vulnerabilities
 
 ## Output Format
 
