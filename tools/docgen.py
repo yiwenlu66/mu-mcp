@@ -393,9 +393,7 @@ class DocgenTool(WorkflowTool):
         if consolidated_findings.relevant_context:
             # Convert set to list for slicing
             methods_list = list(consolidated_findings.relevant_context)
-            methods_text = "\n".join(
-                f"- {method}" for method in methods_list[:20]
-            )  # Limit to 20
+            methods_text = "\n".join(f"- {method}" for method in methods_list[:20])  # Limit to 20
             if len(methods_list) > 20:
                 methods_text += f"\n... and {len(methods_list) - 20} more"
             context_parts.append(f"\n=== DOCUMENTED FUNCTIONS/METHODS ===\n{methods_text}\n=== END FUNCTIONS ===")

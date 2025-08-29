@@ -1376,7 +1376,14 @@ class BaseWorkflowMixin(ABC):
         response_data["required_actions"] = required_actions
 
         # Generate step guidance
-        response_data["next_steps"] = self.get_step_guidance_message(request)
+        step_guidance = self.get_step_guidance_message(request)
+
+        # Add continuation_id guidance if continuing
+        continuation_id = response_data.get("continuation_id")
+        if continuation_id and request.next_step_required:
+            step_guidance += f"\n\nInclude continuation_id: '{continuation_id}' when calling step {request.step_number + 1}."
+
+        response_data["next_steps"] = step_guidance
 
         return response_data
 

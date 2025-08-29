@@ -24,7 +24,7 @@ COMMON_FIELD_DESCRIPTIONS = {
     "temperature": "0.0=focused, 1.0=creative (tool defaults if unspecified)",
     "thinking_mode": "minimal/low/medium/high/max - depth vs speed tradeoff",
     "use_websearch": "Enable web search for docs and current info",
-    "continuation_id": "Thread ID to continue conversation across tools",
+    "continuation_id": "REQUIRED when provided: Include this ID in follow-up requests to maintain context and avoid re-sending files",
     "images": "Image paths (absolute) or base64 data",
     "files": "Absolute paths to files/folders for context",
 }

@@ -676,7 +676,7 @@ class SimpleTool(BaseTool):
                     return {
                         "continuation_id": continuation_id,
                         "remaining_turns": remaining_turns,
-                        "note": f"Claude can continue this conversation for {remaining_turns} more exchanges.",
+                        "note": f"Use continuation_id '{continuation_id}' in your next request. {remaining_turns} exchanges remaining.",
                     }
             else:
                 # New conversation - create thread and offer continuation
@@ -700,7 +700,7 @@ class SimpleTool(BaseTool):
                 return {
                     "continuation_id": new_thread_id,
                     "remaining_turns": MAX_CONVERSATION_TURNS - 1,
-                    "note": f"Claude can continue this conversation for {MAX_CONVERSATION_TURNS - 1} more exchanges.",
+                    "note": f"Use continuation_id '{new_thread_id}' in your next request. {MAX_CONVERSATION_TURNS - 1} exchanges remaining.",
                 }
         except Exception:
             return None

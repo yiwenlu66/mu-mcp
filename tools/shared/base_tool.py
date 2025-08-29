@@ -1057,13 +1057,13 @@ IMPORTANT: When you identify areas where web searches would significantly improv
 
 Use clear, direct language based on the value of the search:
 
-For valuable supplementary information: "Please perform a web search on '[specific topic/query]' and then continue this analysis using the continuation_id from this response if you find relevant information."
+For valuable supplementary information: "Please perform a web search on '[specific topic/query]' and continue using the continuation_id from this response."
 
-For important missing information: "Please search for '[specific topic/query]' and respond back with the findings using the continuation_id from this response - this information is needed to provide a complete analysis."
+For important missing information: "Please search for '[specific topic/query]' and respond using the continuation_id below with your findings."
 
-For critical/essential information: "SEARCH REQUIRED: Please immediately perform a web search on '[specific topic/query]' and respond back with the results using the continuation_id from this response. Cannot provide accurate analysis without this current information."
+For critical/essential information: "SEARCH REQUIRED: Please immediately perform a web search on '[specific topic/query]' and respond using the continuation_id from this response."
 
-This ensures you get the most current and comprehensive information while maintaining conversation context through the continuation_id."""
+Remember to use the continuation_id when making follow-up requests to preserve context."""
 
         if tool_specific:
             return f"""{base_instruction}
@@ -1083,7 +1083,7 @@ Consider requesting searches for:
 - Security advisories and patches
 - Performance benchmarks and optimizations
 
-When recommending searches, be specific about what information you need and why it would improve your analysis. Always remember to instruct Claude to use the continuation_id from this response when providing search results."""
+When recommending searches, be specific about what information you need and why it would improve your analysis. Always instruct Claude to use the continuation_id from this response."""
 
     def get_language_instruction(self) -> str:
         """
