@@ -7,6 +7,8 @@ from pathlib import Path
 from typing import Optional
 import logging
 
+from models import get_short_name
+
 logger = logging.getLogger(__name__)
 
 
@@ -31,7 +33,7 @@ class ConversationStorage:
         logger.info(f"Conversation storage initialized at: {self.storage_dir}")
     
     def save_conversation(self, conversation_id: str, messages: list, 
-                         model_metadata: Optional[dict] = None) -> bool:
+                         model_metadata: Optional[dict] = None, title: Optional[str] = None) -> bool:
         """
         Save a conversation to disk and update cache.
         
@@ -39,6 +41,7 @@ class ConversationStorage:
             conversation_id: Unique conversation identifier
             messages: List of message dicts with role and content
             model_metadata: Optional metadata about models used
+            title: Optional conversation title
         
         Returns:
             True if saved successfully
@@ -47,6 +50,7 @@ class ConversationStorage:
             file_path = self.storage_dir / f"{conversation_id}.json"
             
             # Check if conversation exists to determine created time
+            existing = {}
             if file_path.exists():
                 with open(file_path, "r") as f:
                     existing = json.load(f)
@@ -62,6 +66,12 @@ class ConversationStorage:
                 "messages": messages,
             }
             
+            # Add title if provided or preserve existing title
+            if title:
+                conversation_data["title"] = title
+            elif "title" in existing:
+                conversation_data["title"] = existing["title"]
+            
             # Add model metadata if provided
             if model_metadata:
                 conversation_data["model_metadata"] = model_metadata
@@ -76,16 +86,24 @@ class ConversationStorage:
             # Update last conversation tracking
             self._last_conversation_id = conversation_id
             # Extract the last model used from messages or metadata
+            last_full_name = None
             if model_metadata and "models_used" in model_metadata:
-                self._last_model_used = model_metadata["models_used"][-1] if model_metadata["models_used"] else None
+                last_full_name = model_metadata["models_used"][-1] if model_metadata["models_used"] else None
             else:
                 # Try to extract from the last assistant message
                 for msg in reversed(messages):
                     if msg.get("role") == "assistant":
                         metadata = msg.get("metadata", {})
                         if "model" in metadata:
-                            self._last_model_used = metadata["model"]
+                            last_full_name = metadata["model"]
                             break
+            
+            # Convert to short name for agent interface
+            if last_full_name:
+                short_name = get_short_name(last_full_name)
+                self._last_model_used = short_name if short_name else last_full_name
+            else:
+                self._last_model_used = None
             
             logger.debug(f"Saved conversation {conversation_id} with {len(messages)} messages")
             return True
@@ -182,3 +200,88 @@ class ConversationStorage:
                 **metadata
             }
         }
+    
+    def list_recent_conversations(self, limit: int = 20) -> list[dict]:
+        """
+        List the most recently updated conversations.
+        
+        Args:
+            limit: Maximum number of conversations to return
+        
+        Returns:
+            List of conversation summaries sorted by update time (newest first)
+        """
+        conversations = []
+        
+        try:
+            # Get all conversation files with their modification times
+            files_with_mtime = []
+            for file_path in self.storage_dir.glob("*.json"):
+                try:
+                    mtime = file_path.stat().st_mtime
+                    files_with_mtime.append((mtime, file_path))
+                except Exception as e:
+                    logger.warning(f"Failed to stat file {file_path}: {e}")
+                    continue
+            
+            # Sort by modification time (newest first) and take only the limit
+            files_with_mtime.sort(key=lambda x: x[0], reverse=True)
+            recent_files = files_with_mtime[:limit]
+            
+            # Now load only the recent files
+            for _, file_path in recent_files:
+                try:
+                    with open(file_path, "r") as f:
+                        data = json.load(f)
+                        
+                        # Extract key information
+                        conv_summary = {
+                            "id": data.get("id"),
+                            "title": data.get("title"),
+                            "created": data.get("created"),
+                            "updated": data.get("updated"),
+                        }
+                        
+                        # Extract model used from messages or metadata
+                        model_full_name = None
+                        if "model_metadata" in data and "models_used" in data["model_metadata"]:
+                            models = data["model_metadata"]["models_used"]
+                            model_full_name = models[-1] if models else None
+                        else:
+                            # Try to extract from the last assistant message
+                            for msg in reversed(data.get("messages", [])):
+                                if msg.get("role") == "assistant":
+                                    metadata = msg.get("metadata", {})
+                                    if "model" in metadata:
+                                        model_full_name = metadata["model"]
+                                        break
+                        
+                        # Convert to short name for agent interface
+                        if model_full_name:
+                            short_name = get_short_name(model_full_name)
+                            model_used = short_name if short_name else model_full_name
+                        else:
+                            model_used = None
+                        
+                        conv_summary["model_used"] = model_used
+                        
+                        # If no title exists (should not happen with new version)
+                        # just use a placeholder
+                        if not conv_summary["title"]:
+                            conv_summary["title"] = "[Untitled conversation]"
+                        
+                        conversations.append(conv_summary)
+                        
+                except Exception as e:
+                    logger.warning(f"Failed to read conversation file {file_path}: {e}")
+                    continue
+            
+            # The files are already in order from the filesystem sorting
+            # But we should still sort by the actual "updated" field in case of discrepancies
+            conversations.sort(key=lambda x: x.get("updated", ""), reverse=True)
+            
+            return conversations
+            
+        except Exception as e:
+            logger.error(f"Failed to list recent conversations: {e}")
+            return []

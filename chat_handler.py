@@ -13,6 +13,7 @@ import aiohttp
 from models import (
     get_allowed_models,
     resolve_model,
+    get_short_name,
 )
 from prompts import (
     get_llm_system_prompt,
@@ -41,6 +42,7 @@ class ChatHandler:
         self,
         prompt: str,
         model: str,  # Now required
+        title: Optional[str] = None,
         continuation_id: Optional[str] = None,
         files: Optional[list[str]] = None,
         images: Optional[list[str]] = None,
@@ -52,7 +54,8 @@ class ChatHandler:
         Args:
             prompt: The user's message
             model: Model name (required)
-            continuation_id: UUID to continue existing conversation
+            title: Title for a new conversation (provide this OR continuation_id, not both)
+            continuation_id: UUID to continue existing conversation (provide this OR title, not both)
             files: List of file paths to include
             images: List of image paths to include
             reasoning_effort: Reasoning depth - "low", "medium", or "high" (for models that support it)
@@ -67,6 +70,21 @@ class ChatHandler:
         if not resolved_model:
             # If not found in registry, use as-is (might be full path)
             resolved_model = model
+        
+        # Validate: exactly one of title or continuation_id must be provided
+        if (title and continuation_id):
+            return {
+                "error": "Cannot provide both 'title' and 'continuation_id'. Use 'title' for new conversations or 'continuation_id' to continue existing ones.",
+                "continuation_id": None,
+                "model_used": None,
+            }
+        
+        if (not title and not continuation_id):
+            return {
+                "error": "Must provide either 'title' for a new conversation or 'continuation_id' to continue an existing one.",
+                "continuation_id": None,
+                "model_used": None,
+            }
         
         # Get or create conversation
         messages_with_metadata = []
@@ -83,7 +101,7 @@ class ChatHandler:
                     "model_used": None,
                 }
         else:
-            # No continuation_id provided, create new conversation
+            # New conversation with title provided
             continuation_id = str(uuid.uuid4())
 
         # Build the user message with metadata and request wrapper
@@ -115,19 +133,26 @@ class ChatHandler:
         messages_with_metadata.append(assistant_message)
         
         # Save conversation to persistent storage
+        # Pass title only for new conversations (when title was provided)
         self.storage.save_conversation(
             continuation_id,
             messages_with_metadata,
-            {"models_used": [resolved_model]}
+            {"models_used": [resolved_model]},
+            title=title  # Will be None for continuations, actual title for new conversations
         )
         
+        # Get short name for agent interface
+        short_name = get_short_name(resolved_model)
+        # Fall back to resolved model if not in registry (custom path)
+        display_name = short_name if short_name else resolved_model
+        
         # Add response wrapper for Claude with model identification
-        wrapped_response = response_text + get_response_wrapper(resolved_model)
+        wrapped_response = response_text + get_response_wrapper(display_name)
 
         return {
             "content": wrapped_response,
             "continuation_id": continuation_id,
-            "model_used": resolved_model,
+            "model_used": display_name,
         }
 
     def _build_user_content(

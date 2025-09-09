@@ -17,7 +17,6 @@ Core principles:
 When additional context would strengthen your response:
 - Request Claude perform web searches for current documentation
 - Ask Claude to provide specific files or code sections
-- Suggest using continuation_id for follow-ups, or starting fresh for new topics
 
 Format code with proper syntax highlighting.
 Maintain technical precision over conversational comfort.
@@ -38,9 +37,12 @@ REQUEST FROM CLAUDE: The following query comes from Claude, an AI assistant seek
 def get_response_wrapper(model_name: str) -> str:
     """
     Wrapper text for Claude to understand this is another AI's perspective.
+    
+    Args:
+        model_name: Short model name (e.g., "gpt-5", "sonnet")
     """
-    # Extract just the model name from full path (e.g., "openai/gpt-5" -> "GPT-5")
-    display_name = model_name.split("/")[-1].upper().replace("-", " ")
+    # Format short name for display (e.g., "gpt-5" -> "GPT 5")
+    display_name = model_name.upper().replace("-", " ")
     return f"""
 
 ---
@@ -54,4 +56,9 @@ def get_agent_tool_description() -> str:
     """
     return """Direct access to state-of-the-art AI models via OpenRouter.
 
-Use for second opinions, peer review, specialized capabilities, or multi-model perspectives."""
+Provide EXACTLY ONE:
+- title: Start fresh (when switching topics, context too long, or isolating model contexts)
+- continuation_id: Continue existing conversation (preserves full context)
+
+When starting fresh: Model has no context - include background details or attach files
+When continuing: Model has conversation history - don't repeat context"""

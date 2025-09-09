@@ -154,3 +154,27 @@ def resolve_model(name: str) -> Optional[str]:
             return model.name
     
     return None
+
+
+def get_short_name(full_name: str) -> Optional[str]:
+    """Get the short name (key) for a full model path.
+    
+    Args:
+        full_name: Full OpenRouter model path (e.g., "openai/gpt-5")
+        
+    Returns:
+        Short name key (e.g., "gpt-5") or None if not found
+    """
+    if not full_name:
+        return None
+    
+    # Check available models for matching full name
+    models = get_allowed_models()
+    
+    for key, model in models.items():
+        if model.name == full_name:
+            return key
+    
+    # If not found in registry, return None
+    # This handles cases where a custom full path was used
+    return None

@@ -55,9 +55,10 @@ async def list_tools() -> list[Tool]:
     model_descriptions = []
     
     for key, model in models.items():
-        # Add the main model name
-        model_enum.append(model.name)
-        model_descriptions.append(f"• {model.name}: {model.description}")
+        # Use short name (key) in enum
+        model_enum.append(key)
+        # Show only short name in description, not full path
+        model_descriptions.append(f"• {key}: {model.description}")
     
     # Build the combined description
     models_description = "Select the AI model that best fits your task:\n\n" + "\n".join(model_descriptions)
@@ -78,9 +79,13 @@ async def list_tools() -> list[Tool]:
                         "enum": model_enum,
                         "description": models_description,
                     },
+                    "title": {
+                        "type": "string",
+                        "description": "Title for new conversation (3-10 words). Provide this OR continuation_id, not both",
+                    },
                     "continuation_id": {
                         "type": "string",
-                        "description": "UUID from previous response to continue that conversation thread. Start fresh (omit this) when: switching topics, context too long, or keeping separate contexts per model",
+                        "description": "UUID to continue existing conversation. Provide this OR title, not both",
                     },
                     "files": {
                         "type": "array",
@@ -143,29 +148,70 @@ async def get_prompt(name: str, arguments: dict[str, Any] = None) -> GetPromptRe
                     role="user",
                     content=TextContent(
                         type="text",
-                        text="Use the chat tool to start a conversation with an AI model."
+                        text="Use the chat tool to interact with an AI model."
                     )
                 )
             ],
         )
     elif name == "continue":
-        # Get the latest conversation to provide continuation_id hint
+        # Get the list of recent conversations
         from chat_handler import ChatHandler
-        handler = ChatHandler()
-        continuation_id, model_used = handler.storage.get_last_conversation_info()
+        from datetime import datetime
         
-        if continuation_id:
-            instruction_text = f"""Continue your previous conversation using the chat tool.
+        handler = ChatHandler()
+        recent_conversations = handler.storage.list_recent_conversations(20)
+        
+        if recent_conversations:
+            # Format the conversation list
+            conv_list = []
+            for i, conv in enumerate(recent_conversations, 1):
+                # Calculate relative time
+                if conv.get("updated"):
+                    try:
+                        updated_time = datetime.fromisoformat(conv["updated"])
+                        now = datetime.utcnow()
+                        time_diff = now - updated_time
+                        
+                        # Format relative time
+                        if time_diff.days > 0:
+                            time_str = f"{time_diff.days} day{'s' if time_diff.days > 1 else ''} ago"
+                        elif time_diff.seconds >= 3600:
+                            hours = time_diff.seconds // 3600
+                            time_str = f"{hours} hour{'s' if hours > 1 else ''} ago"
+                        elif time_diff.seconds >= 60:
+                            minutes = time_diff.seconds // 60
+                            time_str = f"{minutes} minute{'s' if minutes > 1 else ''} ago"
+                        else:
+                            time_str = "just now"
+                    except:
+                        time_str = "unknown time"
+                else:
+                    time_str = "unknown time"
+                
+                # Get display text (title should always exist)
+                display = conv.get("title", "[Untitled]")
+                # model_used is already a short name from list_recent_conversations()
+                model = conv.get("model_used", "unknown model")
+                
+                conv_list.append(
+                    f"{i}. [{time_str}] {display}\n"
+                    f"   Model: {model} | ID: {conv['id']}"
+                )
+            
+            instruction_text = f"""Select a conversation to continue using the chat tool.
 
-IMPORTANT: Use continuation_id: "{continuation_id}" to maintain conversation context.
-Previous model used: {model_used if model_used else "unknown - select appropriate model"}
+Recent Conversations (newest first):
+{chr(10).join(conv_list)}
+
+To continue a conversation, use the chat tool with the desired continuation_id.
+Example: Use continuation_id: "{recent_conversations[0]['id']}" for the most recent conversation.
 
 This allows you to access the full conversation history even if your context was compacted."""
         else:
             instruction_text = "No previous conversations found. Start a new conversation using the chat tool."
         
         return GetPromptResult(
-            description="Continue the previous conversation",
+            description="Continue a previous conversation",
             messages=[
                 PromptMessage(
                     role="user",
