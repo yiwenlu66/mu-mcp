@@ -1,0 +1,16 @@
+[project]
+name = "mu-mcp"
+version = "2.0.0"
+description = "Minimal MCP server for AI model interactions via OpenRouter"
+requires-python = ">=3.10"
+dependencies = [
+    "mcp>=1.0.0",
+    "aiohttp>=3.9.0",
+    "python-dotenv>=1.0.0",
+]
+
+[tool.uv]
+dev-dependencies = []
+
+[project.scripts]
+mu-mcp = "server:main"
