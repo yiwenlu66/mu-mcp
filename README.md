@@ -101,8 +101,11 @@ Then specify model and prompt: "Use gpt-5 to explain quantum computing"
 ### Continue Conversations
 ```
 /mu:continue
-Automatically uses the latest conversation's continuation_id
+Claude sees your recent conversations and can intelligently continue them
+Preserves full context even after Claude's memory is compacted
 ```
+
+**Key Use Case**: Maintain context between different Claude sessions. When Claude's context gets compacted or you need to switch between tasks, `/mu:continue` allows Claude to see all your recent conversations (with titles, timestamps, and models used) and seamlessly resume where you left off. The agent intelligently selects or asks which conversation to continue based on your needs.
 
 ### Challenge Mode
 ```
