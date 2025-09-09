@@ -61,4 +61,9 @@ Provide EXACTLY ONE:
 - continuation_id: Continue existing conversation (preserves full context)
 
 When starting fresh: Model has no context - include background details or attach files
-When continuing: Model has conversation history - don't repeat context"""
+When continuing: Model has conversation history - don't repeat context
+
+FILE ATTACHMENT BEST PRACTICES:
+- Proactively attach relevant files when starting new conversations for context
+- For long content (git diffs, logs, terminal output), save to a file and attach it rather than pasting verbatim in prompt
+- Files are processed more efficiently and precisely than inline text"""
