@@ -46,7 +46,7 @@ class ChatHandler:
         continuation_id: Optional[str] = None,
         files: Optional[list[str]] = None,
         images: Optional[list[str]] = None,
-        reasoning_effort: Optional[str] = None,
+        reasoning_effort: Optional[str] = "medium",
     ) -> dict:
         """
         Chat with an AI model.
